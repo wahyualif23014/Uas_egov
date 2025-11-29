@@ -1,0 +1,230 @@
+/* src/components/styles/komentar.css */
+
+/* --- Layout & Typography --- */
+.komentar-container {
+  max-width: 1000px; /* Lebih lebar sedikit */
+  margin: 0 auto;
+  color: #fff;
+  padding-bottom: 3rem;
+  animation: fadeIn 0.8s ease-out;
+}
+
+.header-section {
+  text-align: center;
+  margin-bottom: 2.5rem;
+}
+
+.title-glow {
+  font-size: 2.5rem;
+  font-weight: 800;
+  margin-bottom: 0.5rem;
+  background: linear-gradient(to right, #fff, #a78bfa);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  text-shadow: 0 0 30px rgba(167, 139, 250, 0.3);
+}
+
+.subtitle {
+  color: #94a3b8;
+  font-size: 1.1rem;
+}
+
+.content-wrapper {
+  display: grid;
+  grid-template-columns: 1.2fr 1fr; /* Form lebih lebar dari list */
+  gap: 2rem;
+  align-items: start;
+}
+
+/* --- FORM CARD (GLASS STYLE) --- */
+.glass-effect {
+  background: rgba(30, 41, 59, 0.6);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  border-radius: 20px;
+  padding: 2rem;
+  box-shadow: 0 20px 50px -10px rgba(0, 0, 0, 0.5);
+  position: relative;
+  overflow: hidden;
+}
+
+/* Garis cahaya di atas card */
+.glass-effect::before {
+  content: '';
+  position: absolute;
+  top: 0; left: 0; width: 100%; height: 2px;
+  background: linear-gradient(90deg, transparent, #8b5cf6, transparent);
+}
+
+/* --- INPUT FIELDS --- */
+.input-group {
+  margin-bottom: 1.5rem;
+}
+
+.input-group label {
+  display: block;
+  margin-bottom: 0.5rem;
+  font-size: 0.9rem;
+  font-weight: 600;
+  color: #e2e8f0;
+  letter-spacing: 0.5px;
+}
+
+.modern-input {
+  width: 100%;
+  background: rgba(15, 23, 42, 0.6);
+  border: 2px solid transparent; /* Border transparan untuk persiapan gradient border */
+  border-radius: 12px;
+  padding: 14px 16px;
+  color: #fff;
+  font-size: 1rem;
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  box-shadow: inset 0 2px 4px rgba(0,0,0,0.2);
+}
+
+.modern-input:focus {
+  outline: none;
+  background: rgba(15, 23, 42, 0.9);
+  border-color: #8b5cf6; /* Warna ungu saat fokus */
+  box-shadow: 0 0 0 4px rgba(139, 92, 246, 0.15); /* Ring cahaya */
+  transform: translateY(-2px);
+}
+
+.modern-input::placeholder {
+  color: rgba(255, 255, 255, 0.3);
+}
+
+/* --- STAR RATING (INTERACTIVE) --- */
+.star-rating-input {
+  display: flex;
+  align-items: center;
+  gap: 5px;
+  background: rgba(15, 23, 42, 0.4);
+  padding: 10px;
+  border-radius: 12px;
+  width: fit-content;
+}
+
+.star-btn {
+  background: none;
+  border: none;
+  font-size: 1.8rem;
+  cursor: pointer;
+  color: #475569; /* Warna bintang mati */
+  transition: transform 0.2s, color 0.2s;
+  padding: 0 2px;
+}
+
+.star-btn.active {
+  color: #fbbf24; /* Warna bintang hidup (Kuning Emas) */
+  text-shadow: 0 0 10px rgba(251, 191, 36, 0.5);
+}
+
+.star-btn:hover {
+  transform: scale(1.2);
+}
+
+.rating-text {
+  margin-left: 10px;
+  font-size: 0.9rem;
+  color: #94a3b8;
+  font-style: italic;
+}
+
+/* --- BUTTON NEON --- */
+.btn-kirim-neon {
+  width: 100%;
+  padding: 16px;
+  border: none;
+  border-radius: 12px;
+  background: linear-gradient(135deg, #6366f1, #8b5cf6, #d946ef);
+  background-size: 200% 200%;
+  color: white;
+  font-weight: 700;
+  font-size: 1.1rem;
+  cursor: pointer;
+  transition: all 0.4s ease;
+  box-shadow: 0 4px 15px rgba(139, 92, 246, 0.4);
+  animation: gradientMove 3s infinite alternate;
+}
+
+.btn-kirim-neon:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 10px 25px rgba(139, 92, 246, 0.6);
+  letter-spacing: 1px;
+}
+
+@keyframes gradientMove {
+  0% { background-position: 0% 50%; }
+  100% { background-position: 100% 50%; }
+}
+
+/* --- COMMENTS LIST (RIGHT SIDE) --- */
+.section-label {
+  color: #8b5cf6;
+  border-bottom: 2px solid rgba(139, 92, 246, 0.3);
+  padding-bottom: 10px;
+  margin-bottom: 20px;
+}
+
+.comments-scroll {
+  max-height: 600px;
+  overflow-y: auto;
+  padding-right: 10px;
+}
+
+/* Scrollbar cantik */
+.comments-scroll::-webkit-scrollbar { width: 6px; }
+.comments-scroll::-webkit-scrollbar-thumb { background: #475569; border-radius: 10px; }
+.comments-scroll::-webkit-scrollbar-track { background: rgba(0,0,0,0.1); }
+
+.comment-card-modern {
+  background: rgba(30, 41, 59, 0.4);
+  border: 1px solid rgba(255, 255, 255, 0.05);
+  border-radius: 16px;
+  padding: 1.5rem;
+  margin-bottom: 1rem;
+  transition: 0.3s;
+}
+
+.comment-card-modern:hover {
+  background: rgba(30, 41, 59, 0.7);
+  border-color: rgba(139, 92, 246, 0.3);
+}
+
+.card-top {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  margin-bottom: 12px;
+}
+
+.user-avatar {
+  width: 40px; height: 40px;
+  background: linear-gradient(45deg, #3b82f6, #8b5cf6);
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: bold;
+  font-size: 1.2rem;
+  color: white;
+}
+
+.user-name { margin: 0; font-size: 1rem; color: #fff; }
+.comment-date { font-size: 0.8rem; color: #94a3b8; display: block; }
+.static-stars { color: #fbbf24; margin-left: auto; letter-spacing: 2px; font-size: 0.9rem; }
+.comment-text { color: #cbd5e1; line-height: 1.6; margin: 0; }
+.empty-state { color: #64748b; font-style: italic; text-align: center; margin-top: 2rem; }
+
+/* Responsive */
+@media (max-width: 768px) {
+  .content-wrapper { grid-template-columns: 1fr; }
+  .title-glow { font-size: 2rem; }
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(20px); }
+  to { opacity: 1; transform: translateY(0); }
+}

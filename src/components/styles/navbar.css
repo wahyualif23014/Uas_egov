@@ -1,0 +1,144 @@
+/* src/components/styles/navbar.css */
+
+/* --- Base Styles --- */
+.navbar {
+  background: rgba(15, 23, 42, 0.9); /* Lebih gelap sedikit agar tulisan jelas */
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+  height: 80px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  position: sticky;
+  top: 0;
+  z-index: 1000; /* Pastikan selalu di paling atas */
+  border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3);
+}
+
+.navbar-container {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  height: 80px;
+  width: 100%;
+  max-width: 1400px; /* Lebarkan container agar muat 6 menu */
+  padding: 0 24px;
+}
+
+/* --- Logo Styles --- */
+.navbar-logo h1 {
+  color: #fff;
+  font-size: 1.5rem;
+  cursor: pointer;
+  margin: 0;
+  letter-spacing: 0.5px;
+  white-space: nowrap; /* Agar logo tidak turun baris */
+}
+
+.navbar-logo .highlight {
+  color: #3b82f6;
+  font-weight: 800;
+}
+
+/* --- Menu Styles (Desktop) --- */
+.nav-menu {
+  /* PERBAIKAN UTAMA DI SINI: Ganti Grid jadi Flex */
+  display: flex; 
+  align-items: center;
+  gap: 10px; /* Jarak antar tombol */
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+
+.nav-item {
+  height: 80px; /* Agar tinggi sama dengan navbar */
+  display: flex;
+  align-items: center;
+}
+
+.nav-link {
+  background: transparent;
+  color: #94a3b8;
+  border: 1px solid transparent;
+  padding: 8px 14px; /* Padding tombol dirapikan */
+  border-radius: 8px;
+  cursor: pointer;
+  font-size: 0.95rem; /* Ukuran font pas */
+  font-weight: 500;
+  transition: all 0.3s ease;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  white-space: nowrap; /* Mencegah teks tombol turun baris */
+}
+
+.nav-link:hover {
+  background-color: rgba(59, 130, 246, 0.1);
+  color: #fff;
+}
+
+/* Style saat tombol aktif */
+.nav-link.active {
+  background: linear-gradient(90deg, #3b82f6, #2563eb);
+  color: #fff;
+  border: 1px solid #3b82f6;
+  box-shadow: 0 0 15px rgba(59, 130, 246, 0.4);
+}
+
+/* --- Hamburger Icon (Default Hidden) --- */
+.menu-icon {
+  display: none;
+  color: #fff;
+  font-size: 1.8rem;
+  cursor: pointer;
+}
+
+/* --- RESPONSIVE MOBILE & TABLET --- */
+/* Kita ubah breakpoint ke 1024px.
+   Artinya: Jika layar < 1024px (Tablet/Laptop kecil), 
+   menu langsung jadi Burger agar tidak sempit. */
+@media screen and (max-width: 1024px) {
+  .menu-icon {
+    display: block; /* Munculkan icon burger */
+  }
+
+  .nav-menu {
+    display: flex;
+    flex-direction: column; /* Susun ke bawah */
+    justify-content: flex-start; /* Mulai dari atas */
+    align-items: center;
+    width: 100%;
+    height: auto; /* Sesuaikan konten */
+    min-height: 100vh; /* Full layar HP */
+    position: absolute;
+    top: 80px;
+    left: -100%; /* Sembunyikan ke kiri */
+    opacity: 0;
+    transition: all 0.4s ease;
+    background: #0f172a; /* Warna background solid gelap */
+    padding-top: 20px;
+    border-top: 1px solid rgba(255,255,255,0.1);
+  }
+
+  .nav-menu.active {
+    left: 0; /* Geser masuk */
+    opacity: 1;
+  }
+
+  .nav-item {
+    width: 100%;
+    height: auto;
+    display: flex;
+    justify-content: center;
+    margin-bottom: 15px; /* Jarak antar menu di HP */
+  }
+
+  .nav-link {
+    width: 80%; /* Tombol lebar di HP */
+    justify-content: center;
+    padding: 14px;
+    font-size: 1.1rem;
+  }
+}
