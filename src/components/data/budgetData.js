@@ -1,6 +1,6 @@
 // Sample data for Kabupaten Jombang
 export const budgetData = {
-  currentYear: 2024,
+  currentYear: 2025,
   summary: {
     pendapatan: {
       planned: 2850000000000,

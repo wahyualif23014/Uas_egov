@@ -7,19 +7,18 @@ const DashboardHeader = () => {
   return (
     <div className="header-card">
       <div className="header-text-content">
-        {/* Wrapper untuk animasi mengetik */}
         <div className="typing-container">
-          <h1 className="header-title">Welcome to Anggaran Daerah Jombang</h1>
+          <h1 className="header-title">Budget Transparency & 
+             Government Performance</h1>
         </div>
         <p className="header-subtitle fade-in-up">
-          Kabupaten Jombang - Transparansi Pengelolaan APBD
+          Pemerintahan Kabupaten Jombang 
         </p>
       </div>
       
       <div className="year-badge bounce-in">
         <div className="badge-content">
-            <h2>2024</h2>
-            <span>Tahun Anggaran</span>
+            <h2>2025</h2>
         </div>
         {/* Elemen dekorasi glow di belakang */}
         <div className="badge-glow"></div>

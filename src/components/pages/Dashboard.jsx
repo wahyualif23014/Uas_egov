@@ -1,9 +1,9 @@
 import React from 'react'
-// PERBAIKAN: Hapus kata 'components/' di path import
 import DashboardHeader from '../dasboard/DashboardHeader'
 import BudgetSummary from '../dasboard/BudgetSummary'
 import BudgetChart from '../dasboard/BudgetChart'
 import YearComparison from '../dasboard/YearComparison'
+import AboutJombang from '../dasboard/AboutJombang'
 
 import { budgetData } from '../data/budgetData'
 import '../styles/dashboard.css'
@@ -24,6 +24,10 @@ const Dashboard = () => {
           <BudgetChart data={budgetData.monthlyData} />
           <YearComparison data={budgetData.yearComparison} />
         </div>
+      </section>
+      <section className='AboutJombang'>
+        <h2 className="section-title">Tentang Jombang</h2>
+        <AboutJombang />
       </section>
     </div>
   )

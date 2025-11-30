@@ -1,8 +1,7 @@
 // src/components/pages/WelcomePage.jsx
 import React, { useState, useEffect, useCallback, useRef } from "react";
 import "../styles/WelcomePage.css";
-// Import logo - sesuaikan path dengan struktur project Anda
-// import logoImage from "../../assets/logo.png";
+
 
 const WelcomePage = ({ onContinue }) => {
   const [isVisible, setIsVisible] = useState(false);
@@ -16,26 +15,7 @@ const WelcomePage = ({ onContinue }) => {
   const containerRef = useRef(null);
 
   const features = [
-    // {
-    // //   icon: "📊",
-    // //   title: "Analisis Data Real-time",
-    // //   description: "Pantau perkembangan anggaran dan kinerja secara langsung"
-    // // },
-    // // {
-    // //   icon: "📑",
-    // //   title: "Dokumen Terintegrasi",
-    // //   description: "Akses semua dokumen penting dalam satu platform"
-    // // },
-    // // {
-    // //   icon: "💬",
-    // //   title: "Komentar Transparan",
-    // //   description: "Berikan masukan dan lihat tanggapan dari pemerintah"
-    // // },
-    // // {
-    // //   icon: "⚡",
-    // //   title: "Kinerja Terukur",
-    // //   description: "Monitor capaian kinerja instansi pemerintah secara detail"
-    // }
+
   ];
 
   useEffect(() => {
