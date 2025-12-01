@@ -1,44 +1,159 @@
-// src/components/pages/Kinerja.jsx
-import React from 'react';
-import '../styles/pages.css';
+import React from "react";
+import '../styles/kinerja.css';
+
+
+const AvatarPlaceholder = ({ size = 84 }) => (
+  <svg
+    width={size}
+    height={size}
+    viewBox="0 0 120 120"
+    xmlns="http://www.w3.org/2000/svg"
+    role="img"
+    aria-label="avatar placeholder"
+  >
+    <rect width="120" height="120" rx="16" fill="#e6e9ee" />
+    <g transform="translate(20,18)" fill="#c3c8d6">
+      <ellipse cx="40" cy="66" rx="28" ry="18" />
+      <circle cx="40" cy="30" r="18" fill="#9aa3b8" />
+    </g>
+  </svg>
+);
 
 const Kinerja = () => {
-  const kpiData = [
-    { label: "Indeks Kepuasan Masyarakat", target: 90, realisasi: 92, unit: "Poin" },
-    { label: "Pertumbuhan Ekonomi", target: 5.2, realisasi: 5.4, unit: "%" },
-    { label: "Penurunan Angka Stunting", target: 12, realisasi: 14, unit: "%" },
-    { label: "Tingkat Pengangguran Terbuka", target: 4.5, realisasi: 4.1, unit: "%" },
-    { label: "Indeks Reformasi Birokrasi", target: 80, realisasi: 78, unit: "BB" },
-    { label: "Opini BPK", target: "WTP", realisasi: "WTP", unit: "Predikat" },
+  const leaders = [
+    {
+      id: 1,
+      name: "Drs. H. Ahmad Fauzi",
+      position: "Bupati Jombang",
+      performancePct: 92,
+      performanceNote: "Pelayanan publik & realisasi program prioritas",
+      // image: '/assets/pemimpin1.jpg' // nanti ganti jika ada
+    },
+    {
+      id: 2,
+      name: "Hj. Siti Marlina",
+      position: "Wakil Bupati",
+      performancePct: 88,
+      performanceNote: "Penguatan UMKM dan pemberdayaan lokal",
+    },
+    {
+      id: 3,
+      name: "Ir. Mohammad Irawan",
+      position: "Sekretaris Daerah",
+      performancePct: 86,
+      performanceNote: "Koordinasi perangkat daerah & tata kelola",
+    },
+    {
+      id: 4,
+      name: "Dr. T. Rahayu",
+      position: "Kepala Dinas Kesehatan",
+      performancePct: 90,
+      performanceNote: "Penurunan angka stunting & layanan kesehatan",
+    },
+    {
+      id: 5,
+      name: "Ir. Mohammad Irawan",
+      position: "Sekretaris Daerah",
+      performancePct: 86,
+      performanceNote: "Koordinasi perangkat daerah & tata kelola",
+    },
+    {
+      id: 6,
+      name: "Dr. T. Rahayu",
+      position: "Kepala Dinas Kesehatan",
+      performancePct: 90,
+      performanceNote: "Penurunan angka stunting & layanan kesehatan",
+    },
+    {
+      id: 7,
+      name: "Dr. T. Rahayu",
+      position: "Kepala Dinas Kesehatan",
+      performancePct: 90,
+      performanceNote: "Penurunan angka stunting & layanan kesehatan",
+    },
+    {
+      id: 8,
+      name: "Ir. Mohammad Irawan",
+      position: "Sekretaris Daerah",
+      performancePct: 86,
+      performanceNote: "Koordinasi perangkat daerah & tata kelola",
+    },
+    {
+      id: 9,
+      name: "Dr. T. Rahayu",
+      position: "Kepala Dinas Kesehatan",
+      performancePct: 90,
+      performanceNote: "Penurunan angka stunting & layanan kesehatan",
+    },
   ];
 
   return (
-    <div className="page-container">
-      <h2 className="page-title">Laporan Kinerja (e-Kinerja)</h2>
-      <div className="kinerja-grid">
-        {kpiData.map((item, index) => (
-          <div key={index} className="kinerja-card">
-            <div className="kinerja-meta">
-              <span>Target: {item.target}</span>
-              <span>Unit: {item.unit}</span>
+    <section className="leaders-wrap">
+      <header className="leaders-header">
+        <div className="leaders-header-left">
+          <span className="leaders-section-tag">e-Kinerja 2024</span>
+
+          <h2 className="leaders-title">
+            Performa Pemimpin Kabupaten Jombang
+          </h2>
+
+          <p className="leaders-desc">
+            Pemantauan capaian kinerja pimpinan daerah berdasarkan indikator
+            strategis. Menampilkan foto, nama, jabatan, dan persentase capaian
+            untuk memberikan transparansi bagi publik.
+          </p>
+        </div>
+
+        <div className="leaders-header-accent">
+          <div className="accent-line"></div>
+        </div>
+      </header>
+
+
+      <div className="leaders-grid">
+        {leaders.map((p) => (
+          <article key={p.id} className="leader-card" aria-labelledby={`leader-${p.id}-name`}>
+            <div className="leader-media">
+              {/* Ganti AvatarPlaceholder dengan <img src={p.image} ...> jika sudah ada file */}
+              <div className="avatar-wrap" aria-hidden="true">
+                <AvatarPlaceholder size={100} />
+              </div>
             </div>
-            <h3>{item.label}</h3>
-            <div className="kinerja-val">
-              {item.realisasi} <span style={{fontSize: '1rem', color:'#fff'}}>{item.unit}</span>
+
+            <div className="leader-body">
+              <div className="leader-top">
+                <div className="leader-info">
+                  <h3 id={`leader-${p.id}-name`} className="leader-name">{p.name}</h3>
+                  <p className="leader-position">{p.position}</p>
+                </div>
+
+                <div className="leader-performance">
+                  <div className="perf-number">{p.performancePct}%</div>
+                  <div className={`perf-chip ${p.performancePct >= 90 ? 'good' : p.performancePct >= 80 ? 'ok' : 'low'}`}>
+                    {p.performancePct >= 90 ? 'Sangat Baik' : p.performancePct >= 80 ? 'Baik' : 'Perlu Perhatian'}
+                  </div>
+                </div>
+              </div>
+
+              <p className="leader-note">{p.performanceNote}</p>
+
+              <div className="leader-progress">
+                <div className="progress-track" aria-hidden="true">
+                  <div
+                    className="progress-fill"
+                    style={{ width: `${Math.min(p.performancePct, 100)}%` }}
+                  />
+                </div>
+                <div className="progress-meta">
+                  <span className="meta-label">Capaian</span>
+                  <span className="meta-value">{p.performancePct}%</span>
+                </div>
+              </div>
             </div>
-            {/* Visual Bar Sederhana */}
-            <div style={{width: '100%', height: '6px', background: '#333', borderRadius: '4px', marginTop: '10px'}}>
-               <div style={{
-                 width: typeof item.realisasi === 'number' ? '80%' : '100%', 
-                 height: '100%', 
-                 background: '#10b981', 
-                 borderRadius: '4px'
-               }}></div>
-            </div>
-          </div>
+          </article>
         ))}
       </div>
-    </div>
+    </section>
   );
 };
 

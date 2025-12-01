@@ -1,0 +1,256 @@
+/* src/styles/kinerja-leaders.css */
+
+/* Container */
+.leaders-wrap {
+  padding: 36px;
+  color: #eef2f7;
+  background: linear-gradient(180deg, #0f1220 0%, #0b0d14 100%);
+  min-height: 100%;
+  box-sizing: border-box;
+}
+
+/* Header */
+.leaders-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 22px;
+}
+
+.leaders-title {
+  font-size: 1.9rem;
+  margin: 0;
+  color: #ffffff;
+  font-weight: 700;
+}
+
+.leaders-desc {
+  margin: 6px 0 0 0;
+  color: #c6cbd6;
+  font-size: 0.95rem;
+  max-width: 760px;
+  line-height: 1.4;
+}
+
+/* Grid layout */
+.leaders-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(520px, 1fr));
+  gap: 20px;
+}
+
+/* Card — larger (approx 1.5x previous) */
+.leader-card {
+  display: flex;
+  gap: 18px;
+  background: #111421;
+  border: 1px solid #2a2f3a;
+  border-radius: 14px;
+  padding: 18px;
+  align-items: center;
+  box-shadow: none; /* clean look */
+  transition: transform .12s ease, border-color .12s ease;
+  min-height: 130px;
+}
+
+.leader-card:hover {
+  transform: translateY(-4px);
+  border-color: #323947;
+}
+
+/* Avatar area */
+.leader-media {
+  flex: 0 0 110px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.avatar-wrap {
+  width: 100px;
+  height: 100px;
+  border-radius: 12px;
+  overflow: hidden;
+  background: #dfe6ee;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+/* Body */
+.leader-body {
+  flex: 1 1 auto;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+/* Top row: name + performance */
+.leader-top {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  gap: 12px;
+}
+
+.leader-info {
+  min-width: 0;
+}
+
+.leader-name {
+  font-size: 1.05rem;
+  margin: 0;
+  color: #ffffff;
+  font-weight: 700;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.leader-position {
+  margin: 6px 0 0 0;
+  font-size: 0.86rem;
+  color: #9aa3b8;
+}
+
+/* Performance area */
+.leader-performance {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  gap: 8px;
+}
+
+.perf-number {
+  font-size: 1.1rem;
+  font-weight: 700;
+  color: #ffffff;
+}
+
+.perf-chip {
+  display: inline-block;
+  font-size: 0.78rem;
+  padding: 6px 10px;
+  border-radius: 999px;
+  color: #0b0f14;
+  background: #cbd5e1;
+  font-weight: 600;
+}
+
+/* perf colors */
+.perf-chip.good { background: #16a34a; color: #eaf7ee; }
+.perf-chip.ok { background: #f59e0b; color: #1b1200; }
+.perf-chip.low { background: #ef4444; color: #fff9f9; }
+
+/* Note */
+.leader-note {
+  margin: 0;
+  color: #b7bcc6;
+  font-size: 0.88rem;
+  line-height: 1.3;
+}
+
+/* Progress bar & meta */
+.leader-progress {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  margin-top: 6px;
+}
+
+.progress-track {
+  width: 100%;
+  height: 10px;
+  background: #1e2430;
+  border-radius: 8px;
+  overflow: hidden;
+  border: 1px solid #282e3a;
+}
+
+.progress-fill {
+  height: 100%;
+  background: #3b82f6;
+  width: 0%;
+  border-radius: 8px;
+  transition: none; /* no animation */
+}
+
+.progress-meta {
+  display: flex;
+  justify-content: space-between;
+  font-size: 0.82rem;
+  color: #aeb6c2;
+}
+
+/* Responsive adjustments */
+@media (max-width: 1100px) {
+  .leaders-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .leader-card {
+    align-items: flex-start;
+  }
+
+  .leader-media {
+    flex: 0 0 84px;
+  }
+
+  .avatar-wrap { width: 84px; height: 84px; border-radius: 10px; }
+}
+
+/* HEADER BARU */
+.leaders-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-end;
+  padding-bottom: 22px;
+  margin-bottom: 26px;
+  border-bottom: 1px solid #1f2430;
+}
+
+.leaders-header-left {
+  max-width: 760px;
+}
+
+.leaders-section-tag {
+  display: inline-block;
+  padding: 4px 10px;
+  font-size: 0.78rem;
+  font-weight: 600;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  background: #1f2430;
+  border-radius: 6px;
+  color: #c2c8d5;
+  border: 1px solid #2b3040;
+  margin-bottom: 10px;
+}
+
+.leaders-title {
+  margin: 4px 0 10px;
+  font-size: 2rem;
+  font-weight: 700;
+  color: #fff;
+}
+
+.leaders-desc {
+  margin: 0;
+  font-size: 0.95rem;
+  line-height: 1.5;
+  color: #bfc5d3;
+}
+
+/* Decorative accent line on the right */
+.leaders-header-accent {
+  flex: 1;
+  display: flex;
+  justify-content: flex-end;
+}
+
+.accent-line {
+  width: 120px;
+  height: 4px;
+  background: #374151;
+  border-radius: 4px;
+}
