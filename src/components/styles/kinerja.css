@@ -9,27 +9,62 @@
   box-sizing: border-box;
 }
 
-/* Header */
+/* HEADER */
 .leaders-header {
   display: flex;
-  align-items: center;
   justify-content: space-between;
-  margin-bottom: 22px;
+  align-items: flex-end;
+  padding-bottom: 22px;
+  margin-bottom: 26px;
+  border-bottom: 1px solid #1f2430;
 }
 
+.leaders-header-left {
+  max-width: 760px;
+}
+
+.leaders-section-tag {
+  display: inline-block;
+  padding: 4px 10px;
+  font-size: 0.78rem;
+  font-weight: 600;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  background: #1f2430;
+  border-radius: 6px;
+  color: #c2c8d5;
+  border: 1px solid #2b3040;
+  margin-bottom: 10px;
+}
+
+/* Title + desc */
 .leaders-title {
-  font-size: 1.9rem;
-  margin: 0;
-  color: #ffffff;
+  margin: 4px 0 10px;
+  font-size: 2rem;
   font-weight: 700;
+  color: #fff;
 }
 
 .leaders-desc {
-  margin: 6px 0 0 0;
-  color: #c6cbd6;
+  margin: 0;
   font-size: 0.95rem;
+  line-height: 1.5;
+  color: #bfc5d3;
   max-width: 760px;
-  line-height: 1.4;
+}
+
+/* Decorative accent line on the right */
+.leaders-header-accent {
+  flex: 1;
+  display: flex;
+  justify-content: flex-end;
+}
+
+.accent-line {
+  width: 120px;
+  height: 4px;
+  background: #374151;
+  border-radius: 4px;
 }
 
 /* Grid layout */
@@ -48,14 +83,22 @@
   border-radius: 14px;
   padding: 18px;
   align-items: center;
-  box-shadow: none; /* clean look */
-  transition: transform .12s ease, border-color .12s ease;
+  transition: transform .12s ease, border-color .12s ease, box-shadow .12s ease;
   min-height: 130px;
+  cursor: pointer;
+  outline: none;
 }
 
 .leader-card:hover {
   transform: translateY(-4px);
   border-color: #323947;
+  box-shadow: 0 8px 20px rgba(0,0,0,0.25);
+}
+
+/* keyboard focus for accessibility */
+.leader-card:focus-visible {
+  box-shadow: 0 0 0 4px rgba(59,130,246,0.12);
+  border-color: #2b6cb0;
 }
 
 /* Avatar area */
@@ -75,6 +118,7 @@
   display: flex;
   align-items: center;
   justify-content: center;
+  flex-shrink: 0;
 }
 
 /* Body */
@@ -83,6 +127,7 @@
   display: flex;
   flex-direction: column;
   gap: 10px;
+  min-width: 0; /* penting supaya teks ellipsis bekerja */
 }
 
 /* Top row: name + performance */
@@ -148,6 +193,7 @@
   color: #b7bcc6;
   font-size: 0.88rem;
   line-height: 1.3;
+  overflow-wrap: anywhere;
 }
 
 /* Progress bar & meta */
@@ -169,10 +215,10 @@
 
 .progress-fill {
   height: 100%;
-  background: #3b82f6;
+  background: linear-gradient(90deg, #3b82f6 0%, #1e40af 100%);
   width: 0%;
   border-radius: 8px;
-  transition: none; /* no animation */
+  transition: width .5s ease; /* beri animasi halus saat berubah */
 }
 
 .progress-meta {
@@ -180,6 +226,15 @@
   justify-content: space-between;
   font-size: 0.82rem;
   color: #aeb6c2;
+}
+
+/* Avatar image */
+.leader-avatar {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  border-radius: 12px;
+  display: block;
 }
 
 /* Responsive adjustments */
@@ -199,58 +254,10 @@
   .avatar-wrap { width: 84px; height: 84px; border-radius: 10px; }
 }
 
-/* HEADER BARU */
-.leaders-header {
-  display: flex;
-  justify-content: space-between;
-  align-items: flex-end;
-  padding-bottom: 22px;
-  margin-bottom: 26px;
-  border-bottom: 1px solid #1f2430;
-}
-
-.leaders-header-left {
-  max-width: 760px;
-}
-
-.leaders-section-tag {
-  display: inline-block;
-  padding: 4px 10px;
-  font-size: 0.78rem;
-  font-weight: 600;
-  letter-spacing: 0.06em;
-  text-transform: uppercase;
-  background: #1f2430;
-  border-radius: 6px;
-  color: #c2c8d5;
-  border: 1px solid #2b3040;
-  margin-bottom: 10px;
-}
-
-.leaders-title {
-  margin: 4px 0 10px;
-  font-size: 2rem;
-  font-weight: 700;
-  color: #fff;
-}
-
-.leaders-desc {
-  margin: 0;
-  font-size: 0.95rem;
-  line-height: 1.5;
-  color: #bfc5d3;
-}
-
-/* Decorative accent line on the right */
-.leaders-header-accent {
-  flex: 1;
-  display: flex;
-  justify-content: flex-end;
-}
-
-.accent-line {
-  width: 120px;
-  height: 4px;
-  background: #374151;
-  border-radius: 4px;
+/* Small screens: keep spacing tidy */
+@media (max-width: 520px) {
+  .leaders-wrap { padding: 20px; }
+  .leaders-title { font-size: 1.4rem; }
+  .leader-card { padding: 12px; gap: 12px; }
+  .leader-name { font-size: 1rem; }
 }
