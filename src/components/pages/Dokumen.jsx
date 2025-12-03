@@ -1,23 +1,22 @@
 // src/components/pages/Dokumen.jsx
 import React, { useState, useEffect } from 'react';
 import { documentService } from '../../services/documentService';
-import '../styles/documen.css'; // Pastikan CSS kamu tetap ada
+import '../styles/documen.css'; // Ensure this path is correct
 
 const Dokumen = () => {
   const [documents, setDocuments] = useState([]);
   const [loading, setLoading] = useState(true);
   const [showUploadModal, setShowUploadModal] = useState(false);
-  const [isUploading, setIsUploading] = useState(false); // State khusus loading upload
+  const [isUploading, setIsUploading] = useState(false);
   
   const [uploadForm, setUploadForm] = useState({
     title: '',
     category: '',
-    file: null // Ubah nama state jadi 'file' biar konsisten
+    file: null
   });
   
   const [categories, setCategories] = useState([]);
 
-  // Load documents and categories on component mount
   useEffect(() => {
     loadDocuments();
     loadCategories();
@@ -30,7 +29,6 @@ const Dokumen = () => {
       setDocuments(response.data);
     } catch (error) {
       console.error('Error loading documents:', error);
-      // alert('Gagal memuat data dokumen. Pastikan Backend NestJS jalan di Port 3001');
     } finally {
       setLoading(false);
     }
@@ -45,7 +43,6 @@ const Dokumen = () => {
     }
   };
 
-  // Helper: Format Ukuran File (Bytes ke KB/MB)
   const formatSize = (bytes) => {
     if (bytes === 0) return '0 B';
     const k = 1024;
@@ -54,7 +51,6 @@ const Dokumen = () => {
     return parseFloat((bytes / Math.pow(k, i)).toFixed(1)) + ' ' + sizes[i];
   };
 
-  // Helper: Format Tanggal
   const formatDate = (dateString) => {
     return new Date(dateString).toLocaleDateString('id-ID', {
       day: 'numeric',
@@ -63,7 +59,6 @@ const Dokumen = () => {
     });
   };
 
-  // Helper: Icon berdasarkan tipe
   const getFileIcon = (mimeType) => {
     if (!mimeType) return '📄';
     if (mimeType.includes('pdf')) return '📄';
@@ -74,18 +69,14 @@ const Dokumen = () => {
 
   const handleUploadSubmit = async (e) => {
     e.preventDefault();
-    
     if (!uploadForm.file) {
       alert('Pilih file terlebih dahulu');
       return;
     }
 
     try {
-      setIsUploading(true); // Mulai loading upload
+      setIsUploading(true);
       const formData = new FormData();
-      
-      // PENTING: Key ini harus sesuai dengan NestJS Controller
-      // @UseInterceptors(FileInterceptor('file')) -> jadi key harus 'file'
       formData.append('file', uploadForm.file); 
       formData.append('title', uploadForm.title);
       formData.append('category', uploadForm.category);
@@ -95,124 +86,114 @@ const Dokumen = () => {
       alert('Dokumen berhasil diupload!');
       setShowUploadModal(false);
       setUploadForm({ title: '', category: '', file: null });
-      loadDocuments(); // Refresh list otomatis
+      loadDocuments();
     } catch (error) {
       console.error('Upload error:', error);
       alert('Gagal mengupload dokumen.');
     } finally {
-      setIsUploading(false); // Selesai loading
+      setIsUploading(false);
     }
   };
 
   const handleFileChange = (e) => {
     const selectedFile = e.target.files[0];
-    // Validasi sederhana (opsional, karena backend juga handle)
     if (selectedFile) {
         setUploadForm(prev => ({ ...prev, file: selectedFile }));
     }
   };
 
-  if (loading) {
-    return (
-      <div className="page-container">
-        <h2 className="page-title">Portal Dokumen Resmi</h2>
-        <div style={{textAlign: 'center', padding: '2rem'}}>
-          <p>Memuat data dari server...</p>
-        </div>
-      </div>
-    );
-  }
-
   return (
-    <div className="page-container">
-      <div className="page-header">
-        <h2 className="page-title">Portal Dokumen Resmi</h2>
+    <div className="doc-page-container">
+      {/* HEADER SECTION */}
+      <div className="doc-header">
+        <div className="doc-header-text">
+          <h2 className="doc-title">Portal Dokumen Resmi</h2>
+          <p className="doc-subtitle">Akses dan unduh dokumen publik pemerintah daerah secara transparan.</p>
+        </div>
         <button 
-          className="btn-upload"
+          className="btn-upload-modern"
           onClick={() => setShowUploadModal(true)}
         >
-          Upload Dokumen
+          <span className="icon-plus">+</span> Upload Dokumen
         </button>
       </div>
 
-      {/* Documents List */}
-      <div className="doc-list">
-        {documents.length === 0 ? (
-           <div className="empty-state">
-             <h3>Belum ada dokumen</h3>
-             <p>Silakan upload dokumen baru.</p>
-           </div>
-        ) : (
-            documents.map((doc) => (
-            <div key={doc.id} className="doc-card">
-                <div className="doc-icon">
-                {getFileIcon(doc.file_type)}
-                </div>
-                <div className="doc-info">
-                <h3>{doc.title}</h3>
-                <div className="doc-meta">
-                    <span className="meta-item">
-                    <span className="meta-icon">📅</span>
-                    {/* Menggunakan 'created_at' dari backend */}
-                    {formatDate(doc.created_at)} 
-                    </span>
-                    <span className="meta-item">
-                    <span className="meta-icon">📦</span>
-                    {/* Menggunakan 'file_size' dari backend */}
-                    {formatSize(doc.file_size)}
-                    </span>
-                    {doc.category && (
-                    <span className="meta-item">
-                        <span className="meta-icon">📁</span>
-                        {doc.category}
-                    </span>
-                    )}
-                </div>
+      {/* DOCUMENT GRID */}
+      {loading ? (
+        <div className="doc-loading">
+          <div className="spinner"></div>
+          <p>Memuat dokumen...</p>
+        </div>
+      ) : documents.length === 0 ? (
+        <div className="doc-empty-state">
+           <div className="empty-icon">📂</div>
+           <h3>Belum ada dokumen</h3>
+           <p>Silakan upload dokumen baru untuk memulai.</p>
+        </div>
+      ) : (
+        <div className="doc-grid-layout">
+          {documents.map((doc) => (
+            <div key={doc.id} className="doc-item-card">
+                <div className="doc-card-icon">
+                  {getFileIcon(doc.file_type)}
                 </div>
                 
-                {/* Tombol Download Langsung dari URL Supabase */}
-                <a 
-                    href={doc.file_url} 
-                    target="_blank" 
-                    rel="noopener noreferrer"
-                    className="btn-download"
-                    style={{textDecoration: 'none', display: 'flex', alignItems: 'center', gap: '5px'}}
-                >
-                    <span className="download-icon">⬇</span> Download
-                </a>
-            </div>
-            ))
-        )}
-      </div>
+                <div className="doc-card-content">
+                  <div className="doc-card-header">
+                    <span className="doc-badge">{doc.category || 'Umum'}</span>
+                    <h3 title={doc.title}>{doc.title}</h3>
+                  </div>
+                  
+                  <div className="doc-card-meta">
+                    <div className="meta-row">
+                      <span className="meta-label">Ukuran</span>
+                      <span className="meta-value">{formatSize(doc.file_size)}</span>
+                    </div>
+                    <div className="meta-row">
+                      <span className="meta-label">Tanggal</span>
+                      <span className="meta-value">{formatDate(doc.created_at)}</span>
+                    </div>
+                  </div>
+                </div>
 
-      {/* Upload Modal */}
+                <div className="doc-card-actions">
+                  <a 
+                      href={doc.file_url} 
+                      target="_blank" 
+                      rel="noopener noreferrer"
+                      className="btn-download-card"
+                  >
+                      Unduh File
+                  </a>
+                </div>
+            </div>
+          ))}
+        </div>
+      )}
+
+      {/* UPLOAD MODAL */}
       {showUploadModal && (
-        <div className="modal-overlay">
-          <div className="modal-content">
-            <div className="modal-header">
+        <div className="doc-modal-overlay">
+          <div className="doc-modal-card">
+            <div className="doc-modal-header">
               <h3>Upload Dokumen Baru</h3>
-              <button 
-                className="modal-close"
-                onClick={() => setShowUploadModal(false)}
-              >
-                ✕
-              </button>
+              <button className="doc-modal-close" onClick={() => setShowUploadModal(false)}>×</button>
             </div>
             
-            <form onSubmit={handleUploadSubmit} className="upload-form">
-              <div className="form-group">
-                <label>Judul Dokumen *</label>
+            <form onSubmit={handleUploadSubmit} className="doc-modal-body">
+              <div className="form-group-modern">
+                <label>Judul Dokumen</label>
                 <input
                   type="text"
                   value={uploadForm.title}
                   onChange={(e) => setUploadForm(prev => ({ ...prev, title: e.target.value }))}
-                  placeholder="Masukkan judul dokumen"
+                  placeholder="Contoh: Laporan Keuangan 2024"
                   required
                 />
               </div>
 
-              <div className="form-group">
-                <label>Kategori *</label>
+              <div className="form-group-modern">
+                <label>Kategori</label>
                 <select
                   value={uploadForm.category}
                   onChange={(e) => setUploadForm(prev => ({ ...prev, category: e.target.value }))}
@@ -220,28 +201,32 @@ const Dokumen = () => {
                 >
                   <option value="">Pilih Kategori</option>
                   {categories.map((category, index) => (
-                    <option key={index} value={category}>
-                      {category}
-                    </option>
+                    <option key={index} value={category}>{category}</option>
                   ))}
                 </select>
               </div>
 
-              <div className="form-group">
-                <label>File Dokumen (PDF/Word) *</label>
-                <input
-                  type="file"
-                  accept=".pdf,.doc,.docx"
-                  onChange={handleFileChange}
-                  required
-                />
-                <small>Maksimal upload sesuai setting server</small>
+              <div className="form-group-modern file-input-group">
+                <label>File Dokumen</label>
+                <div className="file-drop-area">
+                  <input
+                    type="file"
+                    accept=".pdf,.doc,.docx,.xls,.xlsx"
+                    onChange={handleFileChange}
+                    required
+                    id="file-upload"
+                  />
+                  <div className="file-msg">
+                    {uploadForm.file ? uploadForm.file.name : "Klik untuk memilih file (PDF, Word, Excel)"}
+                  </div>
+                </div>
+                <small>Maksimal ukuran file sesuai ketentuan server.</small>
               </div>
 
-              <div className="form-actions">
+              <div className="doc-modal-footer">
                 <button 
                   type="button" 
-                  className="btn-cancel"
+                  className="btn-cancel-modern"
                   onClick={() => setShowUploadModal(false)}
                   disabled={isUploading}
                 >
@@ -249,10 +234,10 @@ const Dokumen = () => {
                 </button>
                 <button 
                   type="submit" 
-                  className="btn-submit"
+                  className="btn-submit-modern"
                   disabled={!uploadForm.title || !uploadForm.category || !uploadForm.file || isUploading}
                 >
-                  {isUploading ? 'Mengupload...' : '📤 Upload Dokumen'}
+                  {isUploading ? 'Mengupload...' : 'Simpan Dokumen'}
                 </button>
               </div>
             </form>
