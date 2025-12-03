@@ -1,14 +1,19 @@
 // src/components/pages/Kinerja.jsx
 import React, { useEffect, useState } from "react";
-import "../styles/kinerja.css"; // pastikan path benar
-import fotoBupati from "../../assets/1.jpg"; // pastikan file ada: src/assets/1.jpg
-import wahyu from "../../assets/2.jpg"; // pastikan file ada: src/assets/1.jpg
-import dontol from "../../assets/3.jpeg"; // pastikan file ada: src/assets/1.jpg
-import hexa from "../../assets/4.webp"; // pastikan file ada: src/assets/1.jpg
-import salman from "../../assets/5.jpg"; // pastikan file ada: src/assets/1.jpg
-import agus from "../../assets/6.jpeg"; // pastikan file ada: src/assets/1.jpg
-import endo from "../../assets/7.png"; // pastikan file ada: src/assets/1.jpg
-import bayu from "../../assets/8.jpeg"; // pastikan file ada: src/assets/1.jpg
+import "../styles/kinerja.css"; // pastikan path benar 
+import wahyu from "../../assets/1.jpg";  
+import hexa from "../../assets/3.webp"; 
+import agus from "../../assets/2.jpeg"; 
+import endo from "../../assets/4.png"; 
+import bayu from "../../assets/8.jpeg"; 
+import mifta from "../../assets/6.jpg"; 
+import hari from "../../assets/7.webp"; 
+import nur from "../../assets/8.webp"; 
+import budi from "../../assets/9.png"; 
+import hadi from "../../assets/10.webp"; 
+import windari from "../../assets/11.webp"; 
+import thonsom from "../../assets/12.webp"; 
+import danang from "../../assets/13.jpg"; 
 
 
 const AvatarPlaceholder = ({ size = 84 }) => (
@@ -38,70 +43,42 @@ const Kinerja = () => {
   const leaders = [
     {
       id: 1,
-      name: "Drs. H. Ahmad Fauzi",
-      position: "Bupati Jombang",
-      performancePct: 92,
-      performanceNote: "Pelayanan publik & realisasi program prioritas",
-      image: fotoBupati,
-      details:
-        "Menjalankan program prioritas: infrastruktur, layanan publik, dan kesehatan. Fokus pada percepatan pelayanan perizinan dan digitalisasi layanan desa."
-    },
-    {
-      id: 2,
-      name: "H. Warsubi, S.H., M.Si.",
+      name: "Sugiat, M.Pd.",
       position: "Bupati Jombang",
       performancePct: 88,
-      performanceNote: "Pengarah utama kebijakan pembangunan daerah",
+      performanceNote: "Penanggung jawab utama pemerintahan dan arah pembangunan daerah.",
       image: wahyu,
-      details: "Penguatan pelayanan publik, Pemerataan pembangunan kecamatan & desa, Digitalisasi pemerintahan (SPBE), dan Pemberdayaan ekonomi kerakyatan."
+      details: "Penguatan pelayanan publik, pemerataan pembangunan, pengendalian inflasi, dan peningkatan tata kelola pemerintahan."
+    },
+      {
+      id: 2,
+      name: "Dr. Agus Purnomo, S.STP., M.Si.",
+      position: "Sekretaris Daerah",
+      performancePct: 90,
+      performanceNote: "Pengelola utama koordinasi OPD & birokrasi daerah.",
+      image: agus,
+      details: "Sinkronisasi kebijakan lintas OPD, pembinaan aparatur, dan peningkatan efektivitas tata kelola pemerintahan."
     },
     {
       id: 3,
-      name: "Ir. Mohammad Irawan",
-      position: "Sekretaris Daerah",
-      performancePct: 86,
-      performanceNote: "Koordinasi perangkat daerah & tata kelola",
-      image: dontol,
-      details: "Fokus pada perbaikan tata kelola OPD, efisiensi anggaran, dan peningkatan kapasitas ASN."
-    },
-    {
-      id: 4,
       name: "dr. Hexawan Tjahja Widada, M.KP",
       position: "Kepala Dinas Kesehatan",
       performancePct: 90,
-      performanceNote: "Penurunan angka stunting & layanan kesehatan",
+      performanceNote: "Pengarah peningkatan kesehatan masyarakat dan layanan kesehatan.",
       image: hexa,
-      details: "Program intervensi gizi, posyandu digital, dan peningkatan akses layanan kesehatan dasar di wilayah terpencil."
+      details: "Penurunan stunting, peningkatan layanan puskesmas, penguatan surveilans kesehatan, dan edukasi masyarakat."
     },
     {
-      id: 5,
-      name: "KH M. Salmanudin Yazid, S.Ag., M.Pd.",
-      position: "Wakil Bupati Jombang",
-      performancePct: 90,
-      performanceNote: "Koordinasi bidang sosial, pendidikan, dan pemberdayaan masyarakat.",
-      image: salman,
-      details: "Penguatan UMKM berbasis pesantren,Pemberdayaan pemuda & perempuan,Pengembangan pendidikan karakter,Kemitraan ormas & tokoh masyarakat"
-    },
-    {
-      id: 6,
-      name: "Agus Purnomo, S.H., M.Si..",
-      position: "Sekretaris Daerah",
-      performancePct: 90,
-      performanceNote: "Pengelola utama koordinasi OPD & tata kelola birokrasi.",
-      image: agus,
-      details: "Reformasi birokrasi,Evaluasi kinerja OPD,Sinkronisasi perencanaan & anggaran,Penguatan pelayanan publik berbasis digital"
-    },
-    {
-      id: 7,
+      id: 4,
       name: "Endro Wahyudi, S.STP.",
       position: "Kepala Dinas Kominfo",
       performancePct: 90,
       performanceNote: "Pengembangan digitalisasi layanan & infrastruktur informasi.",
       image: endo,
-      details: "Penguatan SPBE,Layanan aduan publik digital,Pengamanan data pemerintah,Pengembangan jaringan internet publik"
+      details: "Penguatan infrastruktur IT, pengembangan layanan digital publik, dan manajemen komunikasi pemerintah."
     },
     {
-      id: 8,
+      id: 5,
       name: "Bayu Pancoroadi, S.T., M.T.",
       position: "Kepala Dinas PUPR",
       performancePct: 90,
@@ -109,6 +86,83 @@ const Kinerja = () => {
       image: bayu,
       details: "Perbaikan jalan & jembatan,Pengelolaan drainase & sanitasi,Pengembangan perumahan rakyat,Optimalisasi irigasi pertanian"
     },
+    {
+      id: 6,
+      name: "Miftahul Ulum, S.T., M.Si.",
+      position: "Kepala Dinas PUPR",
+      performancePct: 90,
+      performanceNote: "Kepala Dinas Koperasi & Usaha Mikro.",
+      image: mifta,
+      details: "Pengurangan sampah plastik, bank sampah, pengawasan industri pencemar, dan penghijauan."
+    },
+    
+    {
+      id: 7,
+      name: "Hari Purnomo, A.P., M.E.",
+      position: "Kepala Dinas Koperasi & Usaha Mikro",
+      performancePct: 90,
+      performanceNote: "Pembina koperasi dan pengembang UMKM daerah.",
+      image: hari,
+      details: "Revitalisasi koperasi, pelatihan UMKM, audit koperasi, serta fasilitasi pemasaran & modal."
+    },
+    {
+      id: 8,
+      name: "Nur Kamalia, S.K.M., M.Si.",
+      position: "Kepala Dinas Ketahanan Pangan & Perikanan",
+      performancePct: 90,
+      performanceNote: "Penjaga ketahanan pangan dan pengembangan perikanan rakyat.",
+      image: nur,
+      details: "Pengawasan keamanan pangan, pemberdayaan petani & nelayan, budidaya ikan air tawar, dan stabilisasi harga."
+    },
+    {
+      id: 9,
+      name: "Budi Winarno, S.T., M.Si.",
+      position: "Kepala Dinas Perhubungan",
+      performancePct: 90,
+      performanceNote: "Pengatur transportasi dan keselamatan jalan.",
+      image: budi,
+      details: "Penataan rambu & marka, pengembangan trayek, pengujian KIR, dan manajemen lalu lintas."
+    },
+    
+    {
+      id: 10,
+      name: "Sholahuddin Hadi Sucipto",
+      position: "Kepala Dinas Pemberdayaan Masyarakat & Desa",
+      performancePct: 90,
+      performanceNote: ": Pengembang kapasitas desa dan kelembagaan masyarakat.",
+      image: hadi,
+      details: "Pendampingan pemerintahan desa, peningkatan kapasitas aparatur, dan penguatan program pembangunan desa."
+    },
+    {
+      id: 11,
+      name: "(PLH) Wor Windari, Dra., M.Si.",
+      position: "Plh Kepala Dinas Pendidikan & Kebudayaan",
+      performancePct: 90,
+      performanceNote: ": Penguat layanan pendidikan dan pelestarian budaya daerah.",
+      image: windari,
+      details: "Digitalisasi pendidikan, peningkatan kompetensi guru, revitalisasi sekolah, dan pelestarian seni budaya."
+    },
+    
+    {
+      id: 12,
+      name: "Thonsom Pranggono, A.P., M.E.",
+      position: "Kepala Satpol PP",
+      performancePct: 90,
+      performanceNote: ":Penegak Perda dan ketertiban umum.",
+      image: thonsom,
+      details: "Penertiban PKL, pengawasan reklame, operasi gabungan, dan perlindungan aset daerah."
+    },
+    
+    {
+      id: 13,
+      name: "Danang Praptoko, S.T., M.T.",
+      position: "Kepala Bapenda",
+      performancePct: 90,
+      performanceNote: ":Pengelola pendapatan daerah.",
+      image: danang,
+      details: "Optimalisasi PAD, modernisasi pajak digital, penertiban objek pajak, dan intensifikasi pajak."
+    },
+    
   ];
 
   // ketika gambar error, tambahkan id ke erroredIds

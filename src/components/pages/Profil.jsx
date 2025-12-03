@@ -1,46 +1,75 @@
 // src/components/pages/Profil.jsx
-import React from 'react';
-import '../styles/pages.css';
+import React from "react";
+import "../styles/pages.css";
+import warsubi from "../../assets/warsubi.png"; 
+import salma from "../../assets/salma.png"; 
 
 const Profil = () => {
+  const leaders = [
+    {
+      id: 1,
+      name: "WARSUBI, S.H., M.Si",
+      role: "BUPATI JOMBANG",
+      image: warsubi, 
+      bgColor: "#0AA06E",
+    },
+    {
+      id: 2,
+      name: "M. SALMANUDIN, S.Ag., M.Pd",
+      role: "WAKIL BUPATI JOMBANG",
+      image: salma,
+      bgColor: "#FF0000",
+    },
+  ];
+
+  const opd = [
+    { title: "Humas & Protokol", summary: "Informasi publik, hubungan masyarakat dan protokoler.", emoji: "👥" },
+    { title: "Kominfo", summary: "Infrastruktur TI, layanan digital dan SPBE.", emoji: "💻" },
+    { title: "Dinas PUPR", summary: "Infrastruktur jalan, irigasi dan perumahan.", emoji: "🏗️" },
+    { title: "Dinas Kesehatan", summary: "Layanan kesehatan dan penurunan stunting.", emoji: "⚕️" },
+    { title: "Dinas Pendidikan", summary: "Mutu pendidikan dan budaya.", emoji: "📚" },
+    { title: "Dinas Sosial", summary: "Layanan sosial dan kesejahteraan masyarakat.", emoji: "❤️" },
+    { title: "Bappeda", summary: "Perencanaan pembangunan dan evaluasi.", emoji: "📊" },
+    { title: "BPKAD", summary: "Pengelolaan keuangan dan aset daerah.", emoji: "💰" },
+  ];
+
   return (
-    <div className="page-container">
-      <h2 className="page-title">🏛️ Profil Pemerintah Daerah</h2>
-      
-      {/* Visi Misi */}
-      <div className="glass-card" style={{marginBottom: '3rem', textAlign: 'center'}}>
-        <h3 style={{color: '#8b5cf6'}}>Visi & Misi</h3>
-        <p style={{fontStyle: 'italic', fontSize: '1.2rem'}}>"Terwujudnya Jombang yang Berkarakter dan Berdaya Saing"</p>
+    <div className="page-container profil-modern">
+
+      <h2 className="profil-title">Profil Pemerintah Kabupaten Jombang</h2>
+
+      {/* ==== LEADER SECTION ==== */}
+      <div className="leader-showcase">
+        {leaders.map((l) => (
+          <div className="leader-box" key={l.id}>
+            <div
+              className="leader-photo-wrapper"
+              style={{ background: l.bgColor }}
+            >
+              <img src={l.image} alt={l.name} className="leader-img" />
+            </div>
+
+            <h3 className="leader-name-main">{l.name}</h3>
+            <p className="leader-role-main">{l.role}</p>
+
+            <button className="btn-outline-profile">Tampilkan Profil</button>
+          </div>
+        ))}
       </div>
 
-      {/* Pimpinan */}
-      <div className="profil-grid">
-        <div className="profil-card">
-            <div className="profil-img" style={{background: 'url(https://via.placeholder.com/100) center/cover'}}></div>
-            <h3>Dr. H. Contoh Nama</h3>
-            <p className="profil-role">Pj. Bupati Jombang</p>
-        </div>
-        <div className="profil-card">
-            <div className="profil-img" style={{background: 'url(https://via.placeholder.com/100) center/cover'}}></div>
-            <h3>H. Wakil Nama, S.E.</h3>
-            <p className="profil-role">Sekretaris Daerah</p>
-        </div>
-        <div className="profil-card">
-            <div className="profil-img" style={{background: 'url(https://via.placeholder.com/100) center/cover'}}></div>
-            <h3>Drs. Kepala BPKAD</h3>
-            <p className="profil-role">Kepala BPKAD</p>
-        </div>
+      {/* ==== OPD DIVISION 2 ROWS ==== */}
+      <h3 className="section-title-opd">Instansi / OPD Terkait</h3>
+
+      <div className="opd-grid-2row">
+        {opd.map((o, i) => (
+          <div key={i} className="opd-card-modern">
+            <div className="opd-icon-modern">{o.emoji}</div>
+            <h4 className="opd-title-modern">{o.title}</h4>
+            <p className="opd-summary-modern">{o.summary}</p>
+          </div>
+        ))}
       </div>
 
-      {/* Daftar OPD */}
-      <div style={{marginTop: '3rem'}}>
-        <h3 style={{borderBottom: '1px solid #333', paddingBottom: '10px'}}>Instansi / OPD Terkait</h3>
-        <ul style={{listStyle: 'none', padding: 0, display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(200px, 1fr))', gap: '10px'}}>
-            {['BPKAD', 'Bappeda', 'Dinas Kominfo', 'Dinas PU', 'Dinas Pendidikan', 'Dinas Kesehatan', 'Inspektorat', 'Dinas Sosial'].map(dinas => (
-                <li key={dinas} style={{background: 'rgba(255,255,255,0.05)', padding: '10px', borderRadius: '6px'}}>🏢 {dinas}</li>
-            ))}
-        </ul>
-      </div>
     </div>
   );
 };
