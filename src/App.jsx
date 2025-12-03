@@ -140,7 +140,7 @@ function App() {
       
       {/* Footer Sederhana */}
       <footer style={{textAlign: 'center', padding: '20px', color: '#666', fontSize: '0.8rem'}}>
-        © 2024 E-Gov Jombang. All Rights Reserved.
+        © 2025 E-Gov Jombang. All Rights Reserved.
       </footer>
     </div>
   );

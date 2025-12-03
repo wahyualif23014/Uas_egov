@@ -1,21 +1,21 @@
 // src/components/pages/Kinerja.jsx
 import React, { useEffect, useState } from "react";
-import "../styles/kinerja.css"; // pastikan path benar 
-import wahyu from "../../assets/1.jpg";  
-import hexa from "../../assets/3.webp"; 
-import agus from "../../assets/2.jpeg"; 
-import endo from "../../assets/4.png"; 
-import bayu from "../../assets/8.jpeg"; 
-import mifta from "../../assets/6.jpg"; 
-import hari from "../../assets/7.webp"; 
-import nur from "../../assets/8.webp"; 
-import budi from "../../assets/9.png"; 
-import hadi from "../../assets/10.webp"; 
-import windari from "../../assets/11.webp"; 
-import thonsom from "../../assets/12.webp"; 
-import danang from "../../assets/13.jpg"; 
+import "../styles/kinerja.css"; // Pastikan path CSS benar
+import wahyu from "../../assets/1.jpg";
+import hexa from "../../assets/3.webp";
+import agus from "../../assets/2.jpeg";
+import endo from "../../assets/4.png";
+import bayu from "../../assets/8.jpeg";
+import mifta from "../../assets/6.jpg";
+import hari from "../../assets/7.webp";
+import nur from "../../assets/8.webp";
+import budi from "../../assets/9.png";
+import hadi from "../../assets/10.webp";
+import windari from "../../assets/11.webp";
+import thonsom from "../../assets/12.webp";
+import danang from "../../assets/13.jpg";
 
-
+// Placeholder Avatar Component
 const AvatarPlaceholder = ({ size = 84 }) => (
   <svg
     width={size}
@@ -25,18 +25,16 @@ const AvatarPlaceholder = ({ size = 84 }) => (
     role="img"
     aria-label="avatar placeholder"
   >
-    <rect width="120" height="120" rx="16" fill="#e6e9ee" />
-    <g transform="translate(20,18)" fill="#c3c8d6">
+    <rect width="120" height="120" rx="16" fill="#1e2430" />
+    <g transform="translate(20,18)" fill="#2a303c">
       <ellipse cx="40" cy="66" rx="28" ry="18" />
-      <circle cx="40" cy="30" r="18" fill="#9aa3b8" />
+      <circle cx="40" cy="30" r="18" fill="#3b4252" />
     </g>
   </svg>
 );
 
 const Kinerja = () => {
-  // track images yang gagal dimuat (pakai id)
   const [erroredIds, setErroredIds] = useState(new Set());
-  // modal state
   const [selected, setSelected] = useState(null);
   const [isModalOpen, setIsModalOpen] = useState(false);
 
@@ -50,7 +48,7 @@ const Kinerja = () => {
       image: wahyu,
       details: "Penguatan pelayanan publik, pemerataan pembangunan, pengendalian inflasi, dan peningkatan tata kelola pemerintahan."
     },
-      {
+    {
       id: 2,
       name: "Dr. Agus Purnomo, S.STP., M.Si.",
       position: "Sekretaris Daerah",
@@ -84,18 +82,17 @@ const Kinerja = () => {
       performancePct: 90,
       performanceNote: "Pembangunan & pemeliharaan infrastruktur daerah.",
       image: bayu,
-      details: "Perbaikan jalan & jembatan,Pengelolaan drainase & sanitasi,Pengembangan perumahan rakyat,Optimalisasi irigasi pertanian"
+      details: "Perbaikan jalan & jembatan, Pengelolaan drainase & sanitasi, Pengembangan perumahan rakyat, Optimalisasi irigasi pertanian."
     },
     {
       id: 6,
       name: "Miftahul Ulum, S.T., M.Si.",
-      position: "Kepala Dinas PUPR",
+      position: "Kepala Dinas PUPR", // Perhatikan: di data awal ada duplikasi posisi, sesuaikan jika perlu
       performancePct: 90,
-      performanceNote: "Kepala Dinas Koperasi & Usaha Mikro.",
+      performanceNote: "Kepala Dinas Lingkungan Hidup", // Asumsi perbaikan data berdasarkan detail sebelumnya
       image: mifta,
       details: "Pengurangan sampah plastik, bank sampah, pengawasan industri pencemar, dan penghijauan."
     },
-    
     {
       id: 7,
       name: "Hari Purnomo, A.P., M.E.",
@@ -123,13 +120,12 @@ const Kinerja = () => {
       image: budi,
       details: "Penataan rambu & marka, pengembangan trayek, pengujian KIR, dan manajemen lalu lintas."
     },
-    
     {
       id: 10,
       name: "Sholahuddin Hadi Sucipto",
       position: "Kepala Dinas Pemberdayaan Masyarakat & Desa",
       performancePct: 90,
-      performanceNote: ": Pengembang kapasitas desa dan kelembagaan masyarakat.",
+      performanceNote: "Pengembang kapasitas desa dan kelembagaan masyarakat.",
       image: hadi,
       details: "Pendampingan pemerintahan desa, peningkatan kapasitas aparatur, dan penguatan program pembangunan desa."
     },
@@ -138,34 +134,30 @@ const Kinerja = () => {
       name: "(PLH) Wor Windari, Dra., M.Si.",
       position: "Plh Kepala Dinas Pendidikan & Kebudayaan",
       performancePct: 90,
-      performanceNote: ": Penguat layanan pendidikan dan pelestarian budaya daerah.",
+      performanceNote: "Penguat layanan pendidikan dan pelestarian budaya daerah.",
       image: windari,
       details: "Digitalisasi pendidikan, peningkatan kompetensi guru, revitalisasi sekolah, dan pelestarian seni budaya."
     },
-    
     {
       id: 12,
       name: "Thonsom Pranggono, A.P., M.E.",
       position: "Kepala Satpol PP",
       performancePct: 90,
-      performanceNote: ":Penegak Perda dan ketertiban umum.",
+      performanceNote: "Penegak Perda dan ketertiban umum.",
       image: thonsom,
       details: "Penertiban PKL, pengawasan reklame, operasi gabungan, dan perlindungan aset daerah."
     },
-    
     {
       id: 13,
       name: "Danang Praptoko, S.T., M.T.",
       position: "Kepala Bapenda",
       performancePct: 90,
-      performanceNote: ":Pengelola pendapatan daerah.",
+      performanceNote: "Pengelola pendapatan daerah.",
       image: danang,
       details: "Optimalisasi PAD, modernisasi pajak digital, penertiban objek pajak, dan intensifikasi pajak."
     },
-    
   ];
 
-  // ketika gambar error, tambahkan id ke erroredIds
   const handleImageError = (id) => {
     setErroredIds((prev) => {
       const next = new Set(prev);
@@ -174,20 +166,18 @@ const Kinerja = () => {
     });
   };
 
-  // buka modal
   const openDetail = (leader) => {
     setSelected(leader);
     setIsModalOpen(true);
+    document.body.style.overflow = 'hidden'; // Prevent scroll di belakang modal
   };
 
-  // tutup modal
   const closeDetail = () => {
     setIsModalOpen(false);
-    // kecil delay supaya animasi (jika ada) dapat berfungsi; bersihkan selected
-    setTimeout(() => setSelected(null), 120);
+    document.body.style.overflow = 'unset'; // Restore scroll
+    setTimeout(() => setSelected(null), 300); // Tunggu animasi selesai
   };
 
-  // tutup modal saat ESC
   useEffect(() => {
     const onKey = (e) => {
       if (e.key === "Escape") closeDetail();
@@ -206,7 +196,6 @@ const Kinerja = () => {
             Pemantauan capaian kinerja pimpinan daerah berdasarkan indikator strategis. Klik kartu untuk melihat detail.
           </p>
         </div>
-
         <div className="leaders-header-accent">
           <div className="accent-line"></div>
         </div>
@@ -234,9 +223,8 @@ const Kinerja = () => {
                       src={p.image}
                       alt={`${p.name} - foto`}
                       className="leader-avatar"
-                      width={100}
-                      height={100}
                       onError={() => handleImageError(p.id)}
+                      loading="lazy"
                     />
                   ) : (
                     <AvatarPlaceholder size={100} />
@@ -250,7 +238,6 @@ const Kinerja = () => {
                     <h3 id={`leader-${p.id}-name`} className="leader-name">{p.name}</h3>
                     <p className="leader-position">{p.position}</p>
                   </div>
-
                   <div className="leader-performance">
                     <div className="perf-number">{p.performancePct}%</div>
                     <div className={`perf-chip ${p.performancePct >= 90 ? 'good' : p.performancePct >= 80 ? 'ok' : 'low'}`}>
@@ -258,9 +245,7 @@ const Kinerja = () => {
                     </div>
                   </div>
                 </div>
-
                 <p className="leader-note">{p.performanceNote}</p>
-
                 <div className="leader-progress" aria-hidden="true">
                   <div className="progress-track">
                     <div className="progress-fill" style={{ width: `${Math.min(p.performancePct, 100)}%` }} />
@@ -276,7 +261,7 @@ const Kinerja = () => {
         })}
       </div>
 
-      {/* Modal Detail */}
+      {/* MODAL DETAIL (POP-UP) */}
       {isModalOpen && selected && (
         <div
           className="modal-overlay"
@@ -288,39 +273,54 @@ const Kinerja = () => {
           aria-label={`Detail ${selected.name}`}
         >
           <div className="modal-card" role="document">
-            <header className="modal-header">
-              <h3 className="modal-title">{selected.name}</h3>
-              <button className="modal-close" onClick={closeDetail} aria-label="Tutup detail">×</button>
-            </header>
-
-            <div className="modal-body">
-              <div className="modal-left">
-                <div className="modal-avatar">
-                  {selected.image && !erroredIds.has(selected.id) ? (
-                    <img src={selected.image} alt={`${selected.name} - foto`} className="leader-avatar" />
-                  ) : (
-                    <AvatarPlaceholder size={140} />
-                  )}
-                </div>
+            <button className="modal-close-btn" onClick={closeDetail} aria-label="Tutup detail">
+              &times;
+            </button>
+            
+            <div className="modal-content-grid">
+              <div className="modal-left-col">
+                 <div className="modal-avatar-large">
+                   {selected.image && !erroredIds.has(selected.id) ? (
+                     <img src={selected.image} alt={selected.name} />
+                   ) : (
+                     <AvatarPlaceholder size={150} />
+                   )}
+                 </div>
+                 <div className="modal-score-badge">
+                    <span className="score-val">{selected.performancePct}%</span>
+                    <span className="score-lbl">Kinerja</span>
+                 </div>
               </div>
 
-              <div className="modal-right">
-                <p className="modal-position"><strong>Jabatan:</strong> {selected.position}</p>
-                <p className="modal-note"><strong>Ringkasan:</strong> {selected.performanceNote}</p>
-                {selected.details && <p className="modal-details"><strong>Detail Program:</strong> {selected.details}</p>}
+              <div className="modal-right-col">
+                 <h2 className="modal-name">{selected.name}</h2>
+                 <p className="modal-role">{selected.position}</p>
+                 
+                 <div className="modal-divider"></div>
 
-                <div className="modal-progress">
-                  <label>Capaian: <strong>{selected.performancePct}%</strong></label>
-                  <div className="progress-track small" aria-hidden="true">
-                    <div className="progress-fill" style={{ width: `${Math.min(selected.performancePct, 100)}%` }} />
-                  </div>
-                </div>
+                 <div className="modal-section">
+                   <h4>Ringkasan Kinerja</h4>
+                   <p>{selected.performanceNote}</p>
+                 </div>
+
+                 {selected.details && (
+                   <div className="modal-section">
+                     <h4>Program Unggulan & Detail</h4>
+                     <p>{selected.details}</p>
+                   </div>
+                 )}
+
+                 <div className="modal-progress-section">
+                    <div className="progress-label-row">
+                       <span>Progress Target Tahunan</span>
+                       <span>{selected.performancePct}%</span>
+                    </div>
+                    <div className="progress-track modal-track">
+                       <div className="progress-fill" style={{ width: `${Math.min(selected.performancePct, 100)}%` }}></div>
+                    </div>
+                 </div>
               </div>
             </div>
-
-            <footer className="modal-footer">
-              <button className="btn btn-primary" onClick={closeDetail}>Tutup</button>
-            </footer>
           </div>
         </div>
       )}
