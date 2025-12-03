@@ -4,11 +4,11 @@ import "../styles/pengadaan.css";
 
 /* Placeholder image SVG */
 const ImgPlaceholder = ({ size = 96 }) => (
-  <svg width={size} height={size} viewBox="0 0 120 120" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="placeholder">
-    <rect width="120" height="120" rx="12" fill="#f3f6fb" />
-    <g transform="translate(14,16)" fill="#d6dde8">
+  <svg width="100%" height="100%" viewBox="0 0 120 120" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="placeholder" style={{maxWidth: size, maxHeight: size}}>
+    <rect width="120" height="120" rx="12" fill="#1e2430" />
+    <g transform="translate(14,16)" fill="#2a303c">
       <rect x="0" y="56" width="92" height="18" rx="6" />
-      <rect x="0" y="6" width="92" height="36" rx="6" fill="#c2ccd9" />
+      <rect x="0" y="6" width="92" height="36" rx="6" fill="#3b4252" />
     </g>
   </svg>
 );
@@ -185,80 +185,100 @@ const Pengadaan = () => {
           <p className="pgd-sub">Monitoring paket pengadaan: nilai kontrak, vendor, status, dan realisasi.</p>
 
           <div className="pgd-stats">
-            <div><strong>{manyData.filter(d=>Number(d.year)===Number(year)).length}</strong> total paket ({year})</div>
-            <div><strong>{filtered.length}</strong> matching</div>
-            <div><strong>{Math.round(filtered.reduce((a,b)=>a+(b.progress||0),0)/(filtered.length||1))}%</strong> rata-rata capaian</div>
+            <div className="stat-item">
+              <span className="stat-val">{manyData.filter(d=>Number(d.year)===Number(year)).length}</span>
+              <span className="stat-label">Total Paket ({year})</span>
+            </div>
+            <div className="stat-item">
+              <span className="stat-val">{filtered.length}</span>
+              <span className="stat-label">Matching</span>
+            </div>
+            <div className="stat-item">
+              <span className="stat-val">{Math.round(filtered.reduce((a,b)=>a+(b.progress||0),0)/(filtered.length||1))}%</span>
+              <span className="stat-label">Rata-rata Capaian</span>
+            </div>
           </div>
         </div>
 
-        <div className="pgd-controls">
-          <select className="pgd-select" value={year} onChange={(e)=>{ setYear(e.target.value); setPage(1); }}>
-            {years.map(y => <option key={y} value={y}>{y}</option>)}
-          </select>
+        <div className="pgd-controls-wrapper">
+          <div className="pgd-controls">
+            <select className="pgd-select" value={year} onChange={(e)=>{ setYear(e.target.value); setPage(1); }}>
+              {years.map(y => <option key={y} value={y}>{y}</option>)}
+            </select>
 
-          <select className="pgd-select" value={category} onChange={(e)=>{ setCategory(e.target.value); setPage(1); }}>
-            {categories.map(c => <option key={c} value={c}>{c}</option>)}
-          </select>
+            <select className="pgd-select" value={category} onChange={(e)=>{ setCategory(e.target.value); setPage(1); }}>
+              {categories.map(c => <option key={c} value={c}>{c}</option>)}
+            </select>
 
-          <select className="pgd-select" value={sortBy} onChange={(e)=>{ setSortBy(e.target.value); }}>
-            <option value="recent">Terbaru</option>
-            <option value="value-desc">Nilai (Tertinggi)</option>
-            <option value="value-asc">Nilai (Terendah)</option>
-            <option value="progress-desc">Progress (Tertinggi)</option>
-            <option value="status">Status (A-Z)</option>
-          </select>
+            <select className="pgd-select" value={sortBy} onChange={(e)=>{ setSortBy(e.target.value); }}>
+              <option value="recent">Terbaru</option>
+              <option value="value-desc">Nilai (Tertinggi)</option>
+              <option value="value-asc">Nilai (Terendah)</option>
+              <option value="progress-desc">Progress (Tertinggi)</option>
+              <option value="status">Status (A-Z)</option>
+            </select>
 
-          <input
-            className="pgd-search"
-            placeholder="Cari paket / vendor / id..."
-            value={query}
-            onChange={(e)=>{ setQuery(e.target.value); setPage(1); }}
-            aria-label="Cari pengadaan"
-          />
-
-          <button className="pgd-btn pgd-btn-outline" onClick={() => window.print()}>Print</button>
-          <button className="pgd-btn pgd-btn-primary" onClick={exportCSVAll}>Export CSV</button>
+            <input
+              className="pgd-search"
+              placeholder="Cari paket / vendor / id..."
+              value={query}
+              onChange={(e)=>{ setQuery(e.target.value); setPage(1); }}
+              aria-label="Cari pengadaan"
+            />
+          </div>
+           <div className="pgd-actions-top">
+             <button className="pgd-btn pgd-btn-outline" onClick={() => window.print()}>Print</button>
+             <button className="pgd-btn pgd-btn-primary" onClick={exportCSVAll}>Export CSV</button>
+           </div>
         </div>
       </div>
 
       <div className="pgd-grid">
         {pageData.length === 0 ? (
-          <div className="pgd-empty">Tidak ada data untuk kriteria ini.</div>
+          <div className="pgd-empty">
+            <div className="empty-icon">📂</div>
+            <p>Tidak ada data untuk kriteria ini.</p>
+          </div>
         ) : pageData.map(p => (
           <article key={p.id} className="pgd-card">
-            <div className="pgd-card-left">
-              <div className="pgd-thumb"><ImgPlaceholder size={96} /></div>
+            <div className="pgd-card-main">
+               <div className="pgd-card-header">
+                 <div className="pgd-thumb"><ImgPlaceholder size={64} /></div>
+                 <div className="pgd-meta-header">
+                   <div className="pgd-topline">
+                     <span className="pgd-id">{p.id}</span>
+                     <span className="pgd-cat">{p.category}</span>
+                   </div>
+                   <h3 className="pgd-title-card" title={p.title}>{p.title}</h3>
+                   <div className="pgd-vendor">{p.vendor}</div>
+                 </div>
+               </div>
 
-              <div className="pgd-meta">
-                <div className="pgd-topline">
-                  <span className="pgd-id">{p.id}</span>
-                  <span className="pgd-cat">{p.category}</span>
-                </div>
-
-                <h3 className="pgd-title-card" title={p.title}>{p.title}</h3>
-                <div className="pgd-vendor">{p.vendor}</div>
-              </div>
+               <div className="pgd-card-stats">
+                  <div className="pgd-stat-row">
+                     <span className="label">Nilai Kontrak</span>
+                     <span className="value money">{formatRupiah(p.value)}</span>
+                  </div>
+                  <div className="pgd-stat-row">
+                     <span className="label">Status</span>
+                     <span className={`pgd-status-badge ${p.status.replace(/\s/g,'-').toLowerCase()}`}>{p.status}</span>
+                  </div>
+               </div>
             </div>
 
-            <div className="pgd-card-right">
-              <div className="pgd-row">
-                <div className="pgd-value">{formatRupiah(p.value)}</div>
-                <div className={`pgd-status ${p.status.replace(/\s/g,'-').toLowerCase()}`}>{p.status}</div>
-              </div>
-
-              <div className="pgd-progress">
+            <div className="pgd-card-footer">
+              <div className="pgd-progress-wrap">
+                <div className="pgd-progress-info">
+                   <span>Progress</span>
+                   <strong>{p.progress}%</strong>
+                </div>
                 <div className="pgd-progress-track">
                   <div className="pgd-progress-fill" style={{ width: `${Math.min(p.progress,100)}%` }} />
                 </div>
-                <div className="pgd-progress-meta">
-                  <span>Capaian</span>
-                  <strong>{p.progress}%</strong>
-                </div>
               </div>
 
-              <div className="pgd-actions">
+              <div className="pgd-card-actions">
                 <button className="small-btn" onClick={() => setDetailItem(p)}>Detail</button>
-                <button className="small-btn-outline" onClick={() => alert("Buka dokumen (dummy)")}>Dokumen</button>
               </div>
             </div>
           </article>
@@ -267,49 +287,66 @@ const Pengadaan = () => {
 
       {/* Pagination */}
       <div className="pgd-pagination">
-        <div className="pgd-pager">
-          <button onClick={() => setPage(1)} disabled={currentPage===1} className="pgd-page-btn">« First</button>
-          <button onClick={() => setPage(s => Math.max(1, s-1))} disabled={currentPage===1} className="pgd-page-btn">‹ Prev</button>
+        <button onClick={() => setPage(1)} disabled={currentPage===1} className="pgd-page-btn first">« First</button>
+        <button onClick={() => setPage(s => Math.max(1, s-1))} disabled={currentPage===1} className="pgd-page-btn prev">‹ Prev</button>
+        
+        <span className="pgd-page-info">
+           Hal <strong>{currentPage}</strong> dari <strong>{totalPages}</strong>
+        </span>
 
-          <div className="pgd-page-info">Hal {currentPage} dari {totalPages}</div>
-
-          <button onClick={() => setPage(s => Math.min(totalPages, s+1))} disabled={currentPage===totalPages} className="pgd-page-btn">Next ›</button>
-          <button onClick={() => setPage(totalPages)} disabled={currentPage===totalPages} className="pgd-page-btn">Last »</button>
-        </div>
+        <button onClick={() => setPage(s => Math.min(totalPages, s+1))} disabled={currentPage===totalPages} className="pgd-page-btn next">Next ›</button>
+        <button onClick={() => setPage(totalPages)} disabled={currentPage===totalPages} className="pgd-page-btn last">Last »</button>
       </div>
 
-      {/* Detail Modal (inline) */}
+      {/* Detail Modal (Glassmorphism) */}
       {detailItem && (
-        <div className="pgd-modal" role="dialog" aria-modal="true">
+        <div className="pgd-modal-overlay" onClick={(e) => { if(e.target === e.currentTarget) setDetailItem(null) }}>
           <div className="pgd-modal-card">
-            <header>
-              <h3>{detailItem.title}</h3>
-              <button className="modal-close" onClick={() => setDetailItem(null)}>✕</button>
-            </header>
-
-            <div className="pgd-modal-body">
-              <div className="left">
-                <div className="thumb-large"><ImgPlaceholder size={140} /></div>
-                <div className="meta-block">
-                  <div><strong>ID:</strong> {detailItem.id}</div>
-                  <div><strong>Vendor:</strong> {detailItem.vendor}</div>
-                  <div><strong>Nilai Kontrak:</strong> {formatRupiah(detailItem.value)}</div>
-                  <div><strong>Status:</strong> {detailItem.status}</div>
-                </div>
+            <button className="pgd-modal-close" onClick={() => setDetailItem(null)}>×</button>
+            
+            <div className="pgd-modal-content">
+              <div className="pgd-modal-header">
+                 <div className="modal-icon-placeholder"><ImgPlaceholder size={80} /></div>
+                 <div className="modal-header-text">
+                    <div className="modal-badges">
+                       <span className="pgd-id">{detailItem.id}</span>
+                       <span className={`pgd-status-badge ${detailItem.status.replace(/\s/g,'-').toLowerCase()}`}>{detailItem.status}</span>
+                    </div>
+                    <h2>{detailItem.title}</h2>
+                    <p className="modal-vendor">{detailItem.vendor}</p>
+                 </div>
               </div>
 
-              <div className="right">
-                <p><strong>Periode:</strong> {detailItem.startDate} — {detailItem.endDate}</p>
-                <p><strong>Catatan:</strong> {detailItem.note}</p>
-                <p><strong>Category:</strong> {detailItem.category}</p>
-                <p><strong>Progress:</strong> {detailItem.progress}%</p>
+              <div className="pgd-modal-grid">
+                 <div className="pgd-modal-item">
+                    <label>Nilai Kontrak</label>
+                    <div className="val money">{formatRupiah(detailItem.value)}</div>
+                 </div>
+                 <div className="pgd-modal-item">
+                    <label>Kategori</label>
+                    <div className="val">{detailItem.category}</div>
+                 </div>
+                 <div className="pgd-modal-item">
+                    <label>Periode Pelaksanaan</label>
+                    <div className="val">{detailItem.startDate} — {detailItem.endDate}</div>
+                 </div>
+                 <div className="pgd-modal-item full-width">
+                    <label>Deskripsi & Catatan</label>
+                    <div className="val text-desc">{detailItem.note}</div>
+                 </div>
+                 <div className="pgd-modal-item full-width">
+                    <label>Progress Pengerjaan ({detailItem.progress}%)</label>
+                    <div className="pgd-progress-track modal-track">
+                       <div className="pgd-progress-fill" style={{ width: `${Math.min(detailItem.progress,100)}%` }}></div>
+                    </div>
+                 </div>
+              </div>
+
+              <div className="pgd-modal-footer">
+                 <button className="pgd-btn" onClick={() => setDetailItem(null)}>Tutup</button>
+                 <button className="pgd-btn pgd-btn-primary" onClick={() => alert("Mengunduh dokumen...")}>Unduh Dokumen Kontrak</button>
               </div>
             </div>
-
-            <footer>
-              <button className="pgd-btn" onClick={() => setDetailItem(null)}>Tutup</button>
-              <button className="pgd-btn pgd-btn-primary" onClick={() => alert("Cetak detail (dummy)")}>Print</button>
-            </footer>
           </div>
         </div>
       )}
