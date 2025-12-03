@@ -1,5 +1,6 @@
 // src/components/pages/Komentar.jsx
 import React, { useState, useEffect } from 'react';
+import { commentService } from '../../services/commentService'; // Import Service
 import '../styles/komentar.css';
 
 const Komentar = () => {
@@ -11,44 +12,66 @@ const Komentar = () => {
   });
   
   const [showNotification, setShowNotification] = useState(false);
-  const [hoverRating, setHoverRating] = useState(0); // Untuk efek hover bintang
+  const [hoverRating, setHoverRating] = useState(0);
+  const [loading, setLoading] = useState(true);
+  const [isSubmitting, setIsSubmitting] = useState(false);
 
+  // 1. Load Komentar dari Backend saat halaman dibuka
   useEffect(() => {
-    const dataTersimpan = localStorage.getItem('komentarEgov');
-    if (dataTersimpan) {
-      setComments(JSON.parse(dataTersimpan));
-    }
+    loadComments();
   }, []);
 
-  useEffect(() => {
-    localStorage.setItem('komentarEgov', JSON.stringify(comments));
-  }, [comments]);
+  const loadComments = async () => {
+    try {
+      const data = await commentService.getComments();
+      setComments(data);
+    } catch (error) {
+      console.error(error);
+    } finally {
+      setLoading(false);
+    }
+  };
 
   const handleChange = (e) => {
     setFormData({ ...formData, [e.target.name]: e.target.value });
   };
 
-  // Fungsi khusus untuk handle klik bintang
   const handleRatingClick = (rate) => {
     setFormData({ ...formData, rating: rate });
   };
 
-  const handleSubmit = (e) => {
+  // 2. Handle Submit ke Backend
+  const handleSubmit = async (e) => {
     e.preventDefault();
-    const newComment = {
-      id: Date.now(),
-      nama: formData.nama,
-      pesan: formData.pesan,
-      rating: formData.rating,
-      tanggal: new Date().toLocaleDateString('id-ID', {
-        weekday: 'long', year: 'numeric', month: 'long', day: 'numeric'
-      })
-    };
+    setIsSubmitting(true);
 
-    setComments([newComment, ...comments]);
-    setFormData({ nama: '', pesan: '', rating: 5 });
-    setShowNotification(true);
-    setTimeout(() => setShowNotification(false), 3000);
+    try {
+      // Kirim ke Backend NestJS
+      await commentService.postComment({
+        nama: formData.nama,
+        pesan: formData.pesan,
+        rating: formData.rating
+      });
+
+      // Reset Form & Tampilkan Notifikasi
+      setFormData({ nama: '', pesan: '', rating: 5 });
+      setShowNotification(true);
+      setTimeout(() => setShowNotification(false), 3000);
+      
+      // Refresh list komentar agar yang baru muncul
+      loadComments(); 
+    } catch (error) {
+      alert('Gagal mengirim aspirasi. Cek koneksi server.');
+    } finally {
+      setIsSubmitting(false);
+    }
+  };
+
+  // Helper Format Tanggal dari Timestamp Supabase
+  const formatDate = (dateString) => {
+    return new Date(dateString).toLocaleDateString('id-ID', {
+      weekday: 'long', year: 'numeric', month: 'long', day: 'numeric'
+    });
   };
 
   return (
@@ -56,17 +79,12 @@ const Komentar = () => {
       {/* Notifikasi Popup */}
       {showNotification && (
         <div className="custom-notification">
-            <div className="notif-icon">✅</div>
-            <div className="notif-content">
-                <h4>Aspirasi Terkirim!</h4>
-                <p>Terima kasih atas masukan Anda.</p>
-            </div>
         </div>
       )}
 
       <div className="header-section">
         <h2 className="title-glow">Suara Masyarakat</h2>
-        <p className="subtitle">Waduh aspirasi digital untuk Jombang yang lebih baik.</p>
+        <p className="subtitle">Wadah aspirasi digital untuk Jombang yang lebih baik.</p>
       </div>
 
       <div className="content-wrapper">
@@ -88,7 +106,7 @@ const Komentar = () => {
               />
             </div>
 
-            {/* Input Rating Bintang Interaktif */}
+            {/* Input Rating Bintang */}
             <div className="input-group">
               <label>Tingkat Kepuasan</label>
               <div className="star-rating-input">
@@ -127,8 +145,8 @@ const Komentar = () => {
               ></textarea>
             </div>
 
-            <button type="submit" className="btn-kirim-neon">
-              🚀 Kirim Aspirasi
+            <button type="submit" className="btn-kirim-neon" disabled={isSubmitting}>
+              {isSubmitting ? 'Mengirim...' : ' Kirim Aspirasi'}
             </button>
           </form>
         </div>
@@ -137,16 +155,18 @@ const Komentar = () => {
         <div className="comments-section">
           <h3 className="section-label">Aspirasi Terbaru</h3>
           <div className="comments-scroll">
-            {comments.length === 0 ? (
-              <div className="empty-state">Belum ada aspirasi masuk.</div>
+            {loading ? (
+                <p style={{textAlign: 'center', color: '#fff'}}>Memuat aspirasi...</p>
+            ) : comments.length === 0 ? (
+              <div className="empty-state">Belum ada aspirasi masuk. Jadilah yang pertama!</div>
             ) : (
               comments.map((item) => (
                 <div key={item.id} className="comment-card-modern">
                   <div className="card-top">
-                    <span className="user-avatar">{item.nama.charAt(0)}</span>
+                    <span className="user-avatar">{item.nama.charAt(0).toUpperCase()}</span>
                     <div>
                       <h4 className="user-name">{item.nama}</h4>
-                      <span className="comment-date">{item.tanggal}</span>
+                      <span className="comment-date">{formatDate(item.created_at)}</span>
                     </div>
                     <div className="static-stars">{"★".repeat(item.rating)}</div>
                   </div>

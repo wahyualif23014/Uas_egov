@@ -3,19 +3,19 @@ export const budgetData = {
   currentYear: 2025,
   summary: {
     pendapatan: {
-      planned: 2850000000000,
+      planned: 2675792291720,
       realized: 2450000000000,
       percentage: 86
     },
     belanja: {
-      planned: 2720000000000,
+      planned: 3200000000000,
       realized: 2300000000000,
       percentage: 85
     },
     pembiayaan: {
-      planned: 130000000000,
-      realized: 150000000000,
-      percentage: 115
+      planned: 98715940271,
+      realized: 15000000000,
+      percentage: 50
     }
   },
   monthlyData: [

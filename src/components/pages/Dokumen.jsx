@@ -1,18 +1,20 @@
 // src/components/pages/Dokumen.jsx
 import React, { useState, useEffect } from 'react';
 import { documentService } from '../../services/documentService';
-import '../styles/pages.css';
+import '../styles/documen.css'; // Pastikan CSS kamu tetap ada
 
 const Dokumen = () => {
   const [documents, setDocuments] = useState([]);
   const [loading, setLoading] = useState(true);
-  const [downloading, setDownloading] = useState({});
   const [showUploadModal, setShowUploadModal] = useState(false);
+  const [isUploading, setIsUploading] = useState(false); // State khusus loading upload
+  
   const [uploadForm, setUploadForm] = useState({
     title: '',
     category: '',
-    document: null
+    file: null // Ubah nama state jadi 'file' biar konsisten
   });
+  
   const [categories, setCategories] = useState([]);
 
   // Load documents and categories on component mount
@@ -28,7 +30,7 @@ const Dokumen = () => {
       setDocuments(response.data);
     } catch (error) {
       console.error('Error loading documents:', error);
-      alert('Gagal memuat data dokumen');
+      // alert('Gagal memuat data dokumen. Pastikan Backend NestJS jalan di Port 3001');
     } finally {
       setLoading(false);
     }
@@ -43,67 +45,70 @@ const Dokumen = () => {
     }
   };
 
-  const handleDownload = async (documentId, documentTitle) => {
-    try {
-      setDownloading(prev => ({ ...prev, [documentId]: true }));
-      await documentService.downloadDocument(documentId, documentTitle);
-      alert(`Dokumen "${documentTitle}" berhasil diunduh!`);
-    } catch (error) {
-      console.error('Download error:', error);
-      alert('Gagal mengunduh dokumen: ' + error.message);
-    } finally {
-      setDownloading(prev => ({ ...prev, [documentId]: false }));
-    }
+  // Helper: Format Ukuran File (Bytes ke KB/MB)
+  const formatSize = (bytes) => {
+    if (bytes === 0) return '0 B';
+    const k = 1024;
+    const sizes = ['B', 'KB', 'MB', 'GB'];
+    const i = Math.floor(Math.log(bytes) / Math.log(k));
+    return parseFloat((bytes / Math.pow(k, i)).toFixed(1)) + ' ' + sizes[i];
+  };
+
+  // Helper: Format Tanggal
+  const formatDate = (dateString) => {
+    return new Date(dateString).toLocaleDateString('id-ID', {
+      day: 'numeric',
+      month: 'long',
+      year: 'numeric',
+    });
+  };
+
+  // Helper: Icon berdasarkan tipe
+  const getFileIcon = (mimeType) => {
+    if (!mimeType) return '📄';
+    if (mimeType.includes('pdf')) return '📄';
+    if (mimeType.includes('word') || mimeType.includes('doc')) return '📝';
+    if (mimeType.includes('sheet') || mimeType.includes('excel')) return '📊';
+    return '📎';
   };
 
   const handleUploadSubmit = async (e) => {
     e.preventDefault();
     
-    if (!uploadForm.document) {
-      alert('Pilih file PDF terlebih dahulu');
+    if (!uploadForm.file) {
+      alert('Pilih file terlebih dahulu');
       return;
     }
 
     try {
+      setIsUploading(true); // Mulai loading upload
       const formData = new FormData();
+      
+      // PENTING: Key ini harus sesuai dengan NestJS Controller
+      // @UseInterceptors(FileInterceptor('file')) -> jadi key harus 'file'
+      formData.append('file', uploadForm.file); 
       formData.append('title', uploadForm.title);
       formData.append('category', uploadForm.category);
-      formData.append('document', uploadForm.document);
 
       await documentService.uploadDocument(formData);
       
       alert('Dokumen berhasil diupload!');
       setShowUploadModal(false);
-      setUploadForm({ title: '', category: '', document: null });
-      loadDocuments(); // Refresh list
+      setUploadForm({ title: '', category: '', file: null });
+      loadDocuments(); // Refresh list otomatis
     } catch (error) {
       console.error('Upload error:', error);
-      alert('Gagal mengupload dokumen: ' + error.message);
+      alert('Gagal mengupload dokumen.');
+    } finally {
+      setIsUploading(false); // Selesai loading
     }
   };
 
   const handleFileChange = (e) => {
-    const file = e.target.files[0];
-    if (file && file.type !== 'application/pdf') {
-      alert('Hanya file PDF yang diizinkan');
-      e.target.value = '';
-      return;
-    }
-    setUploadForm(prev => ({ ...prev, document: file }));
-  };
-
-  const getFileIcon = (fileType) => {
-    switch (fileType.toLowerCase()) {
-      case 'pdf':
-        return '📄';
-      case 'doc':
-      case 'docx':
-        return '📝';
-      case 'xls':
-      case 'xlsx':
-        return '📊';
-      default:
-        return '📎';
+    const selectedFile = e.target.files[0];
+    // Validasi sederhana (opsional, karena backend juga handle)
+    if (selectedFile) {
+        setUploadForm(prev => ({ ...prev, file: selectedFile }));
     }
   };
 
@@ -111,9 +116,8 @@ const Dokumen = () => {
     return (
       <div className="page-container">
         <h2 className="page-title">Portal Dokumen Resmi</h2>
-        <div className="loading-container">
-          <div className="loading-spinner"></div>
-          <p>Memuat dokumen...</p>
+        <div style={{textAlign: 'center', padding: '2rem'}}>
+          <p>Memuat data dari server...</p>
         </div>
       </div>
     );
@@ -131,81 +135,55 @@ const Dokumen = () => {
         </button>
       </div>
 
-      {/* Statistics */}
-      {/* <div className="doc-stats">
-        <div className="stat-card">
-          <h3></h3>
-          <span className="stat-number">{documents.length}</span>
-        </div>
-        <div className="stat-card">
-          <h3></h3>
-          <span className="stat-number">
-            {documents.reduce((total, doc) => {
-              const size = parseFloat(doc.size) || 0;
-              return total + size;
-            }, 0).toFixed(1)} 
-          </span>
-        </div>
-      </div> */}
-
       {/* Documents List */}
       <div className="doc-list">
-        {documents.map((doc) => (
-          <div key={doc.id} className="doc-card">
-            <div className="doc-icon">
-              {getFileIcon(doc.type)}
+        {documents.length === 0 ? (
+           <div className="empty-state">
+             <h3>Belum ada dokumen</h3>
+             <p>Silakan upload dokumen baru.</p>
+           </div>
+        ) : (
+            documents.map((doc) => (
+            <div key={doc.id} className="doc-card">
+                <div className="doc-icon">
+                {getFileIcon(doc.file_type)}
+                </div>
+                <div className="doc-info">
+                <h3>{doc.title}</h3>
+                <div className="doc-meta">
+                    <span className="meta-item">
+                    <span className="meta-icon">📅</span>
+                    {/* Menggunakan 'created_at' dari backend */}
+                    {formatDate(doc.created_at)} 
+                    </span>
+                    <span className="meta-item">
+                    <span className="meta-icon">📦</span>
+                    {/* Menggunakan 'file_size' dari backend */}
+                    {formatSize(doc.file_size)}
+                    </span>
+                    {doc.category && (
+                    <span className="meta-item">
+                        <span className="meta-icon">📁</span>
+                        {doc.category}
+                    </span>
+                    )}
+                </div>
+                </div>
+                
+                {/* Tombol Download Langsung dari URL Supabase */}
+                <a 
+                    href={doc.file_url} 
+                    target="_blank" 
+                    rel="noopener noreferrer"
+                    className="btn-download"
+                    style={{textDecoration: 'none', display: 'flex', alignItems: 'center', gap: '5px'}}
+                >
+                    <span className="download-icon">⬇</span> Download
+                </a>
             </div>
-            <div className="doc-info">
-              <h3>{doc.title}</h3>
-              <div className="doc-meta">
-                <span className="meta-item">
-                  <span className="meta-icon">📅</span>
-                  {doc.date}
-                </span>
-                <span className="meta-item">
-                  <span className="meta-icon">📦</span>
-                  {doc.size}
-                </span>
-                <span className="meta-item">
-                  <span className="meta-icon">📄</span>
-                  {doc.type}
-                </span>
-                {doc.category && (
-                  <span className="meta-item">
-                    <span className="meta-icon">📁</span>
-                    {doc.category}
-                  </span>
-                )}
-              </div>
-            </div>
-            <button 
-              className={`btn-download ${downloading[doc.id] ? 'downloading' : ''}`}
-              onClick={() => handleDownload(doc.id, doc.title)}
-              disabled={downloading[doc.id]}
-            >
-              {downloading[doc.id] ? (
-                <>
-                  <span className="download-spinner"></span>
-                  Mengunduh...
-                </>
-              ) : (
-                <>
-                  <span className="download-icon">⬇</span>
-                  Download
-                </>
-              )}
-            </button>
-          </div>
-        ))}
+            ))
+        )}
       </div>
-
-      {documents.length === 0 && !loading && (
-        <div className="empty-state">
-          <div className="empty-icon">📄</div>
-          <h3>Tidak ada dokumen tersedia</h3>
-          <p>Upload dokumen pertama Anda</p>
-        </div>
-      )}
 
       {/* Upload Modal */}
       {showUploadModal && (
@@ -250,14 +228,14 @@ const Dokumen = () => {
               </div>
 
               <div className="form-group">
-                <label>File PDF *</label>
+                <label>File Dokumen (PDF/Word) *</label>
                 <input
                   type="file"
-                  accept=".pdf,application/pdf"
+                  accept=".pdf,.doc,.docx"
                   onChange={handleFileChange}
                   required
                 />
-                <small>Hanya file PDF, maksimal 10MB</small>
+                <small>Maksimal upload sesuai setting server</small>
               </div>
 
               <div className="form-actions">
@@ -265,15 +243,16 @@ const Dokumen = () => {
                   type="button" 
                   className="btn-cancel"
                   onClick={() => setShowUploadModal(false)}
+                  disabled={isUploading}
                 >
                   Batal
                 </button>
                 <button 
                   type="submit" 
                   className="btn-submit"
-                  disabled={!uploadForm.title || !uploadForm.category || !uploadForm.document}
+                  disabled={!uploadForm.title || !uploadForm.category || !uploadForm.file || isUploading}
                 >
-                  📤 Upload Dokumen
+                  {isUploading ? 'Mengupload...' : '📤 Upload Dokumen'}
                 </button>
               </div>
             </form>

@@ -1,122 +1,70 @@
-// src/services/documentService.js
-const API_BASE_URL = 'http://localhost:5000/api';
+import axios from 'axios';
+
+// 1. Arahkan ke Port 3001 (Backend NestJS)
+const API_BASE_URL = 'http://localhost:3001';
 
 class DocumentService {
   constructor() {
     this.baseURL = API_BASE_URL;
   }
 
-  async request(endpoint, options = {}) {
+  // --- GET ALL DOCUMENTS ---
+  async getDocuments() {
     try {
-      const response = await fetch(`${this.baseURL}${endpoint}`, {
-        headers: {
-          'Content-Type': 'application/json',
-          ...options.headers,
-        },
-        ...options,
-      });
-
-      const data = await response.json();
-
-      if (!response.ok) {
-        throw new Error(data.message || `HTTP error! status: ${response.status}`);
-      }
-
-      return data;
+      // Backend: GET http://localhost:3001/documents
+      const response = await axios.get(`${this.baseURL}/documents`);
+      
+      // Axios otomatis membungkus data di dalam property .data
+      // Kita return object { data: ... } agar formatnya sama dengan code frontend kamu
+      return { data: response.data }; 
     } catch (error) {
-      console.error('API Request Error:', error);
+      console.error('Error fetching documents:', error);
       throw error;
     }
   }
 
-  // Get all documents
-  async getDocuments(category = 'all') {
-    const endpoint = category !== 'all' 
-      ? `/documents?category=${category}`
-      : '/documents';
-    
-    return this.request(endpoint);
-  }
-
-  // Get document by ID
-  async getDocumentById(id) {
-    return this.request(`/documents/${id}`);
-  }
-
-  // Get categories
-  async getCategories() {
-    return this.request('/documents/categories');
-  }
-
-  // Download document
-  async downloadDocument(documentId, documentTitle) {
-    try {
-      const response = await fetch(`${this.baseURL}/documents/download/${documentId}`);
-      
-      if (!response.ok) {
-        const errorData = await response.json();
-        throw new Error(errorData.message || 'Gagal mengunduh dokumen');
-      }
-
-      // Convert response to blob
-      const blob = await response.blob();
-      
-      // Create download link
-      const url = window.URL.createObjectURL(blob);
-      const link = document.createElement('a');
-      link.href = url;
-      
-      // Get filename from response headers or use document title
-      const contentDisposition = response.headers.get('Content-Disposition');
-      let filename = `${documentTitle}.pdf`;
-      
-      if (contentDisposition) {
-        const filenameMatch = contentDisposition.match(/filename="(.+)"/);
-        if (filenameMatch) {
-          filename = filenameMatch[1];
-        }
-      }
-      
-      link.download = filename;
-      document.body.appendChild(link);
-      link.click();
-      document.body.removeChild(link);
-      window.URL.revokeObjectURL(url);
-      
-      return { success: true, message: 'Dokumen berhasil diunduh' };
-    } catch (error) {
-      console.error('Download Error:', error);
-      throw error;
-    }
-  }
-
-  // Upload document
+  // --- UPLOAD DOCUMENT ---
   async uploadDocument(formData) {
     try {
-      const response = await fetch(`${this.baseURL}/documents/upload`, {
-        method: 'POST',
-        body: formData, // formData sudah include file
+      // Backend: POST http://localhost:3001/documents/upload
+      // Header 'Content-Type': 'multipart/form-data' otomatis dihandle axios saat ada FormData
+      const response = await axios.post(`${this.baseURL}/documents/upload`, formData, {
+        headers: {
+          'Content-Type': 'multipart/form-data',
+        },
       });
-
-      if (!response.ok) {
-        const errorData = await response.json();
-        throw new Error(errorData.message || 'Gagal mengupload dokumen');
-      }
-
-      return await response.json();
+      return response.data;
     } catch (error) {
-      console.error('Upload Error:', error);
+      console.error('Error uploading:', error);
       throw error;
     }
   }
 
-  // Delete document
+  // --- GET CATEGORIES ---
+  // Karena backend belum ada tabel kategori khusus, kita hardcode dulu
+  // supaya frontend tidak error saat memanggil loadCategories()
+  async getCategories() {
+    return {
+      data: ['Anggaran', 'Laporan', 'Regulasi', 'Surat Keputusan', 'Lainnya']
+    };
+  }
+
+  // --- DOWNLOAD DOCUMENT ---
+  // CATATAN PENTING:
+  // Dengan Supabase, kita dapat 'file_url' langsung.
+  // Jadi download sebenarnya cukup pakai <a href={doc.file_url}> di React component.
+  // Fungsi ini saya buat return URL-nya saja jika dipanggil manual.
+  async downloadDocument(documentId, documentTitle) {
+    console.log("Download ditangani langsung oleh browser via URL Supabase");
+    return { success: true };
+  }
+
+  // --- DELETE DOCUMENT (Optional, jika nanti backend sudah ada fitur delete) ---
   async deleteDocument(id) {
-    return this.request(`/documents/${id}`, {
-      method: 'DELETE',
-    });
+    // await axios.delete(`${this.baseURL}/documents/${id}`);
+    console.log("Fitur delete belum ada di backend");
   }
 }
 
-// Export singleton instance
+// Export instance agar bisa langsung dipakai dengan `documentService.getDocuments()`
 export const documentService = new DocumentService();
